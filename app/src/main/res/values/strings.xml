@@ -50,4 +50,8 @@
     <string name="item_name">Item Name</string>
     <string name="item_rating">1.0</string>
     <string name="item_price">000000</string>
+    <string name="item_favorite">Favorite</string>
+    <string name="item_link">Link</string>
+    <string name="item_tags">tags</string>
+    <string name="skin_type">Skin Type</string>
 </resources>
