@@ -74,4 +74,6 @@
     <string name="skin_tone_lighttomedium_description">Light to medium skin tones range from beige to olive. They have more melanin than fair skin, offering some protection against UV damage, but may still experience sunburn.</string>
     <string name="skin_tone_mediumtodark">Medium To Dark</string>
     <string name="skin_tone_mediumtodark_description">Medium to dark skin tones encompass a wide range of shades, from tan to deep brown. They contain higher levels of melanin, providing natural sun protection and reduced susceptibility to sunburn.</string>
+    <string name="skin_result">Skin Result</string>
+    <string name="skin_profile">Your Skin Profile</string>
 </resources>

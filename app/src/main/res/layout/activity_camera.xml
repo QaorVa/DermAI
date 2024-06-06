@@ -6,23 +6,44 @@
     android:layout_height="match_parent"
     tools:context=".ui.camera.CameraActivity">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:scaleType="centerCrop"
-        android:visibility="gone"
+
+    <androidx.camera.view.PreviewView
+        android:id="@+id/cameraView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </androidx.camera.view.PreviewView>
+
+    <ImageButton
+        android:id="@+id/bt_flip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:layout_constraintEnd_toEndOf="@+id/bt_flash"
+        app:layout_constraintTop_toBottomOf="@+id/bt_flash"
+        app:srcCompat="@drawable/flip_camera" />
+
+    <ImageButton
+        android:id="@+id/bt_flash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/camera_image" />
+        app:srcCompat="@drawable/flash_on" />
 
     <ImageButton
         android:id="@+id/bt_camera"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:layout_marginBottom="60dp"
+        android:layout_marginBottom="40dp"
         android:background="@drawable/round_background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -38,17 +59,6 @@
         app:layout_constraintBottom_toBottomOf="@+id/bt_camera"
         app:layout_constraintStart_toEndOf="@+id/bt_camera"
         app:srcCompat="@drawable/gallery" />
-
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.37"
-        app:srcCompat="@drawable/scan" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

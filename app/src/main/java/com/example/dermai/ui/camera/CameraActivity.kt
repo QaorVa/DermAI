@@ -1,36 +1,27 @@
 package com.example.dermai.ui.camera
 
 import android.Manifest
-import android.content.ContentValues
 import android.content.pm.PackageManager
-import android.os.Build
-import android.provider.MediaStore
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Matrix
 import com.example.dermai.R
 import com.example.dermai.databinding.ActivityCameraBinding
 import com.example.dermai.ui.base.BaseActivity
-import android.view.View
-import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
-import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
-import com.google.common.util.concurrent.ListenableFuture
-import java.io.File
+import java.nio.ByteBuffer
 import java.util.concurrent.ExecutionException
-import java.util.concurrent.Executors
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
 
 class CameraActivity : BaseActivity<ActivityCameraBinding>() {
-    private lateinit var capture: ImageButton
-    private lateinit var toggleFlash: ImageButton
-    private lateinit var flipCamera: ImageButton
-    private lateinit var previewView: PreviewView
-    private var cameraFacing = CameraSelector.LENS_FACING_BACK
+    private var cameraFacing = CameraSelector.LENS_FACING_FRONT
+    private var capturedBitmap: Bitmap? = null
 
     private val activityResultLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { result: Boolean ->
         if (result) {
@@ -47,7 +38,17 @@ class CameraActivity : BaseActivity<ActivityCameraBinding>() {
     }
 
     override fun setProcess() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            startCamera(cameraFacing)
+        } else {
+            activityResultLauncher.launch(Manifest.permission.CAMERA)
+        }
+    }
 
+    override fun setActions() {
+        binding.btFlip.setOnClickListener {
+            flipCamera()
+        }
     }
 
     override fun setObservers() {
@@ -55,7 +56,7 @@ class CameraActivity : BaseActivity<ActivityCameraBinding>() {
     }
 
     private fun startCamera(cameraFacing: Int) {
-        val aspectRatio = aspectRatio(previewView.width, previewView.height)
+        val aspectRatio = aspectRatio(binding.cameraView.width, binding.cameraView.height)
         val listenableFuture = ProcessCameraProvider.getInstance(this)
 
         listenableFuture.addListener({
@@ -77,18 +78,18 @@ class CameraActivity : BaseActivity<ActivityCameraBinding>() {
                 cameraProvider.unbindAll()
                 val camera = cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageCapture)
 
-                capture.setOnClickListener {
+                binding.btCamera.setOnClickListener {
                     if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                         activityResultLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     }
                     takePicture(imageCapture)
                 }
 
-                toggleFlash.setOnClickListener {
+                binding.btFlash.setOnClickListener {
                     setFlashIcon(camera)
                 }
 
-                preview.setSurfaceProvider(previewView.surfaceProvider)
+                preview.setSurfaceProvider(binding.cameraView.surfaceProvider)
             } catch (e: ExecutionException) {
                 e.printStackTrace()
             } catch (e: InterruptedException) {
@@ -98,13 +99,33 @@ class CameraActivity : BaseActivity<ActivityCameraBinding>() {
     }
 
     private fun takePicture(imageCapture: ImageCapture) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             saveImageUsingMediaStore(imageCapture)
+            Log.d("CameraActivity", "Using MediaStore")
         } else {
             val file = File(getExternalFilesDir(null), "${System.currentTimeMillis()}.jpg")
             val outputFileOptions = ImageCapture.OutputFileOptions.Builder(file).build()
             saveImageToFile(imageCapture, outputFileOptions, file.path)
-        }
+            Log.d("CameraActivity", "Using File")
+        }*/
+
+        imageCapture.takePicture(ContextCompat.getMainExecutor(this), object : ImageCapture.OnImageCapturedCallback() {
+            override fun onCaptureSuccess(image: ImageProxy) {
+                capturedBitmap = imageProxyToBitmap(image)
+                image.close()
+                runOnUiThread {
+                    Toast.makeText(this@CameraActivity, "Image captured successfully", Toast.LENGTH_SHORT).show()
+                }
+                startCamera(cameraFacing)
+            }
+
+            override fun onError(exception: ImageCaptureException) {
+                runOnUiThread {
+                    Toast.makeText(this@CameraActivity, "Failed to capture image: ${exception.message}", Toast.LENGTH_SHORT).show()
+                }
+                startCamera(cameraFacing)
+            }
+        })
     }
 
     private fun setFlashIcon(camera: Camera) {
@@ -112,10 +133,10 @@ class CameraActivity : BaseActivity<ActivityCameraBinding>() {
             val torchState = camera.cameraInfo.torchState.value
             if (torchState == TorchState.OFF) {
                 camera.cameraControl.enableTorch(true)
-                toggleFlash.setImageResource(R.drawable.flash_off)
+                binding.btFlash.setImageResource(R.drawable.flash_off)
             } else {
                 camera.cameraControl.enableTorch(false)
-                toggleFlash.setImageResource(R.drawable.flash_on)
+                binding.btFlash.setImageResource(R.drawable.flash_on)
             }
         } else {
             runOnUiThread {
@@ -133,34 +154,29 @@ class CameraActivity : BaseActivity<ActivityCameraBinding>() {
         }
     }
 
-    private fun saveImageUsingMediaStore(imageCapture: ImageCapture) {
-        val contentValues = ContentValues().apply {
-            put(MediaStore.MediaColumns.DISPLAY_NAME, "${System.currentTimeMillis()}.jpg")
-            put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
-            put(MediaStore.MediaColumns.RELATIVE_PATH, "DCIM/CameraXExample")
+    private fun flipCamera() {
+        cameraFacing = if (cameraFacing == CameraSelector.LENS_FACING_BACK) {
+            CameraSelector.LENS_FACING_FRONT
+        } else {
+            CameraSelector.LENS_FACING_BACK
         }
-        val resolver = contentResolver
-        val uri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
-        val outputFileOptions = ImageCapture.OutputFileOptions.Builder(resolver, uri!!, contentValues).build()
-
-        saveImageToFile(imageCapture, outputFileOptions, uri.toString())
+        startCamera(cameraFacing)
     }
 
-    private fun saveImageToFile(imageCapture: ImageCapture, outputFileOptions: ImageCapture.OutputFileOptions, path: String) {
-        imageCapture.takePicture(outputFileOptions, Executors.newCachedThreadPool(), object : ImageCapture.OnImageSavedCallback {
-            override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
-                runOnUiThread {
-                    Toast.makeText(this@CameraActivity, "Image saved at: $path", Toast.LENGTH_SHORT).show()
-                }
-                startCamera(cameraFacing)
-            }
+    private fun imageProxyToBitmap(image: ImageProxy): Bitmap {
+        val buffer: ByteBuffer = image.planes[0].buffer
+        val bytes = ByteArray(buffer.remaining())
+        buffer.get(bytes)
+        val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
 
-            override fun onError(exception: ImageCaptureException) {
-                runOnUiThread {
-                    Toast.makeText(this@CameraActivity, "Failed to save: ${exception.message}", Toast.LENGTH_SHORT).show()
-                }
-                startCamera(cameraFacing)
-            }
-        })
+        // Correct the orientation of the image if needed
+        val rotationDegrees = image.imageInfo.rotationDegrees
+        return if (rotationDegrees != 0) {
+            val matrix = Matrix()
+            matrix.postRotate(rotationDegrees.toFloat())
+            Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
+        } else {
+            bitmap
+        }
     }
 }
