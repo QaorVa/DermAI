@@ -6,14 +6,14 @@ import android.os.Bundle
 import com.example.dermai.R
 import com.example.dermai.ui.camera.CameraActivity
 import com.example.dermai.ui.details.DetailsActivity
+import com.example.dermai.ui.result.ResultActivity
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        intent = Intent(this, CameraActivity::class.java)
-        /*intent.putExtra(DetailsActivity.EXTRA_SELECT, "acne_level")*/
-        startActivity(intent)
+        /*intent = Intent(this, ResultActivity::class.java)
+        startActivity(intent)*/
     }
 }
