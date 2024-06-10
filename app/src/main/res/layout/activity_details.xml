@@ -10,7 +10,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    <androidx.cardview.widget.CardView
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:elevation="4dp"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/toolbar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/details"
+                android:fontFamily="@font/worksans_bold"
+                android:textColor="@android:color/black"
+                android:textSize="22sp"
+                android:layout_gravity="center" />
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <androidx.cardview.widget.CardView
         android:id="@+id/base_cardView_skintype"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

@@ -37,9 +37,7 @@
             android:exported="false" />
         <activity
             android:name=".ui.details.DetailsActivity"
-            android:exported="false"
-            android:label="@string/title_activity_details"
-            android:theme="@style/Theme.DermAI" />
+            android:exported="false" />
         <activity
             android:name=".ui.collection.CollectionActivity"
             android:exported="false" />

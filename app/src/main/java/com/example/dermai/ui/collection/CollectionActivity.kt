@@ -1,10 +1,9 @@
 package com.example.dermai.ui.collection
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import com.example.dermai.R
+import android.content.Intent
 import com.example.dermai.databinding.ActivityCollectionBinding
 import com.example.dermai.ui.base.BaseActivity
+import com.example.dermai.ui.wishlist.WishlistActivity
 
 class CollectionActivity : BaseActivity<ActivityCollectionBinding>() {
 
@@ -13,14 +12,27 @@ class CollectionActivity : BaseActivity<ActivityCollectionBinding>() {
     }
 
     override fun setUI() {
-        TODO("Not yet implemented")
+
     }
 
     override fun setProcess() {
-        TODO("Not yet implemented")
+
+    }
+
+    override fun setActions() {
+        binding.apply {
+            cvMakeup.setOnClickListener {
+                intent = Intent(this@CollectionActivity, WishlistActivity::class.java)
+                startActivity(intent)
+            }
+            cvSkincare.setOnClickListener {
+                intent = Intent(this@CollectionActivity, WishlistActivity::class.java)
+                startActivity(intent)
+            }
+        }
     }
 
     override fun setObservers() {
-        TODO("Not yet implemented")
+
     }
 }

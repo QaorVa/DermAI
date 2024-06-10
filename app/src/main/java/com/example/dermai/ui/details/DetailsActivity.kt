@@ -1,5 +1,6 @@
 package com.example.dermai.ui.details
 
+import android.view.MenuItem
 import android.view.View
 import android.widget.ImageButton
 import androidx.cardview.widget.CardView
@@ -16,6 +17,15 @@ class DetailsActivity : BaseActivity<ActivityDetailsBinding>() {
     }
 
     override fun setUI() {
+
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.apply {
+            title = ""
+            setDisplayHomeAsUpEnabled(true)
+            setDisplayShowHomeEnabled(true)
+            setHomeAsUpIndicator(R.drawable.chevron_left)
+        }
+
         when(intent.getStringExtra(EXTRA_SELECT)) {
             "skin_type" -> {
                 binding.apply {
@@ -33,6 +43,8 @@ class DetailsActivity : BaseActivity<ActivityDetailsBinding>() {
                 }
             }
         }
+
+
     }
 
     override fun setActions() {
@@ -67,6 +79,14 @@ class DetailsActivity : BaseActivity<ActivityDetailsBinding>() {
             hiddenView.visibility = View.VISIBLE
             btArrow.setImageResource(R.drawable.expand_less)
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            onBackPressed()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     companion object {

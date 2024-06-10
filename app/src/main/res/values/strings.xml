@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">DermAI</string>
     <string name="error_dialog">An Error Occured</string>
-    <string name="title_activity_details">DetailsActivity</string>
+    <string name="details">Details</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
@@ -44,7 +44,7 @@
         libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
-    <string name="makeup">Make Up\n</string>
+    <string name="makeup">Make Up</string>
     <string name="item_count">0 Items</string>
     <string name="skincare">Skin Care</string>
     <string name="item_name">Item Name</string>
@@ -85,4 +85,7 @@
     <string name="skin_tone_mediumtodark_description_short">Tan to deep brown complexion, higher melanin levels, with natural sun protection and reduced sunburn susceptibility.</string>
     <string name="skin_result">Skin Result</string>
     <string name="skin_profile">Your Skin Profile</string>
+    <string name="Recommended">Recommended For You</string>
+    <string name="wishlist">Wishlisted</string>
+    <string name="analysis_result">Analysis Result</string>
 </resources>

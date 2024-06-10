@@ -1,17 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.result.ResultActivity">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/analysis_result"
+            android:fontFamily="@font/worksans_bold"
+            android:textColor="@android:color/black"
+            android:textSize="22sp"
+            android:layout_gravity="center" />
+
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <TextView
+        android:id="@+id/recommendations"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
+        android:fontFamily="@font/worksans_semibold"
+        android:text="@string/Recommended"
+        android:textColor="@color/black"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView" />
+
     <TextView
         android:id="@+id/textView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="24dp"
         android:fontFamily="@font/worksans_bold"
         android:text="@string/skin_result"
@@ -19,7 +63,7 @@
         android:textSize="28sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
     <TextView
         android:id="@+id/textView2"
@@ -38,6 +82,7 @@
         app:layout_constraintTop_toBottomOf="@id/textView" />
 
     <HorizontalScrollView
+        android:id="@+id/horizontalScrollView"
         android:layout_width="0dp"
         android:layout_height="260dp"
         android:layout_marginStart="24dp"
@@ -83,8 +128,8 @@
                         android:layout_marginEnd="8dp"
                         android:fontFamily="@font/worksans_medium"
                         android:text="@string/skin_type_combination_description_short"
-                        android:textSize="12sp"
                         android:textColor="@color/black"
+                        android:textSize="12sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/imageView3" />
@@ -106,8 +151,8 @@
                         android:id="@+id/tv_result_skin_type_value"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/skin_type_combination"
                         android:fontFamily="@font/worksans_regular"
+                        android:text="@string/skin_type_combination"
                         android:textColor="@color/white"
                         android:textSize="16sp"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -158,8 +203,8 @@
                         android:layout_marginEnd="8dp"
                         android:fontFamily="@font/worksans_medium"
                         android:text="@string/acne_level_moderate_description_short"
-                        android:textSize="12sp"
                         android:textColor="@color/black"
+                        android:textSize="12sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/iv_result_acne_level" />
@@ -168,8 +213,8 @@
                         android:id="@+id/tv_result_acne_level_value"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/acne_level_moderate"
                         android:fontFamily="@font/worksans_regular"
+                        android:text="@string/acne_level_moderate"
                         android:textColor="@color/white"
                         android:textSize="16sp"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -215,8 +260,8 @@
                         android:id="@+id/tv_result_skin_tone_value"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/skin_tone_fairtolight"
                         android:fontFamily="@font/worksans_regular"
+                        android:text="@string/skin_tone_fairtolight"
                         android:textColor="@color/white"
                         android:textSize="16sp"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -232,8 +277,8 @@
                         android:layout_marginEnd="8dp"
                         android:fontFamily="@font/worksans_medium"
                         android:text="@string/skin_tone_fairtolight_description_short"
-                        android:textSize="12sp"
                         android:textColor="@color/black"
+                        android:textSize="12sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/iv_result_skin_tone" />
@@ -241,4 +286,54 @@
             </androidx.cardview.widget.CardView>
         </LinearLayout>
     </HorizontalScrollView>
+
+    <TextView
+        android:id="@+id/result_makeup"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:fontFamily="@font/worksans_semibold"
+        android:text="@string/makeup"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/recommendations"
+        app:layout_constraintStart_toStartOf="@+id/recommendations"
+        app:layout_constraintTop_toBottomOf="@+id/recommendations" />
+
+    <TextView
+        android:id="@+id/result_skincare"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/worksans_semibold"
+        android:text="@string/skincare"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/result_makeup"
+        app:layout_constraintStart_toStartOf="@+id/result_makeup"
+        app:layout_constraintTop_toBottomOf="@+id/rv_result_makeup" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_result_makeup"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="1dp"
+        android:scrollbars="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/result_makeup"
+        app:layout_constraintTop_toBottomOf="@+id/result_makeup" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_result_skincare"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:scrollbars="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/result_makeup"
+        app:layout_constraintTop_toBottomOf="@+id/result_skincare">
+
+    </androidx.recyclerview.widget.RecyclerView>
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
