@@ -1,8 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="200dp"
-    android:layout_height="300dp"
+    android:layout_height="250dp"
     android:layout_marginEnd="8dp"
     app:cardCornerRadius="8dp"
     android:padding="8dp">
@@ -15,12 +14,14 @@
             android:id="@+id/productImageView"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginBottom="4dp"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_launcher_foreground"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/productNameTextView" />
+            app:layout_constraintBottom_toTopOf="@id/productNameTextView"
+            app:layout_constraintDimensionRatio="H,3:2"/>
 
         <TextView
             android:id="@+id/productNameTextView"
@@ -29,10 +30,11 @@
             android:text="Moisturizer A"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:gravity="center"
+            android:gravity="left"
+            android:layout_marginLeft="8dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/productPriceTextView"
+            app:layout_constraintTop_toBottomOf="@id/productImageView"
             android:layout_marginTop="8dp" />
 
         <TextView
@@ -41,9 +43,11 @@
             android:layout_height="wrap_content"
             android:text="Rp 999.000"
             android:textSize="14sp"
-            android:gravity="center"
+            android:gravity="left"
+            android:layout_marginLeft="8dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/productNameTextView"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginTop="4dp" />
 

@@ -22,8 +22,9 @@ class MainActivity : AppCompatActivity() {
         if(PreferenceManager.getInstance(this).isLoggedIn()) {
             startActivity(Intent(this, HomeActivity::class.java))
             finish()
-        } else{
+        } else {
             startActivity(Intent(this, LandingActivity::class.java))
+            finish()
         }
     }
 }

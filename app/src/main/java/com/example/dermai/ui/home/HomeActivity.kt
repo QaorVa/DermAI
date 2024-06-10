@@ -20,6 +20,14 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
 
     private val authViewModel: AuthViewModel by viewModels()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        binding.settingsIcon.setOnClickListener {
+            logout()
+        }
+    }
+
     override fun getViewBinding(): ActivityHomeBinding {
         return ActivityHomeBinding.inflate(layoutInflater)
     }
@@ -103,5 +111,12 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
             return true
         }
         return super.onKeyDown(keyCode, event)
+    }
+
+    private fun logout() {
+        authViewModel.logout()
+        PreferenceManager.getInstance(this).setLoggedIn(false)
+        startActivity(Intent(this, LandingActivity::class.java))
+        finish()
     }
 }

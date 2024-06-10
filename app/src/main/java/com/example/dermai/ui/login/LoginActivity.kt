@@ -82,6 +82,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
             try {
                 val account = task.getResult(ApiException::class.java)
                 authViewModel.loginWithGoogle(account)
+                PreferenceManager.getInstance(this).setLoggedIn(true)
+
             } catch (e: ApiException) {
                 Toast.makeText(this, "Google sign-in failed: ${e.message}", Toast.LENGTH_SHORT).show()
             }
