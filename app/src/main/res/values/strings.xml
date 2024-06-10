@@ -7,6 +7,8 @@
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
+    <string name="default_web_client_id">YOUR_WEB_CLIENT_ID</string>
+
 
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
@@ -50,4 +52,11 @@
     <string name="item_name">Item Name</string>
     <string name="item_rating">1.0</string>
     <string name="item_price">000000</string>
+    <string name="dermai">DermAI</string>
+    <string name="unlock_your_skin_s_secrets_with_a_selfie">Unlock Your Skin\'s Secrets with a Selfie!</string>
+    <string name="home">Home</string>
+    <string name="camera">Camera</string>
+    <string name="collection">Collection</string>
+    <string name="check_your_skin_result_take_a_new_picture">Check Your Skin Result / Take a New Picture</string>
+
 </resources>

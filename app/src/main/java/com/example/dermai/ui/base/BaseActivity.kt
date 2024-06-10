@@ -16,6 +16,7 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
 
     private var _binding: VB? = null
     val binding get() = _binding!!
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = getViewBinding()
@@ -54,10 +55,10 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
             REQUIRED_PERMISSION
         ) == PackageManager.PERMISSION_GRANTED
 
-    open fun showErrorDialog() {
+    open fun showErrorDialog(errorMessage: String) {
         AlertDialog.Builder(this).apply {
             setTitle("Error")
-            setMessage(getString(R.string.error_dialog))
+            setMessage(errorMessage)
             setPositiveButton("OK") { dialog, _ ->
                 dialog.dismiss()
             }
@@ -84,7 +85,6 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
                 Log.d("Permission", "Permission denied")
             }
         }
-
 
     companion object {
         internal const val REQUIRED_PERMISSION = Manifest.permission.READ_EXTERNAL_STORAGE
