@@ -97,4 +97,6 @@
     <string name="collection">Collection</string>
     <string name="check_your_skin_result_take_a_new_picture">Check Your Skin Result / Take a New Picture</string>
 
+    <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
 </resources>

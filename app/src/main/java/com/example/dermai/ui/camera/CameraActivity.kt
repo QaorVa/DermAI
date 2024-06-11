@@ -8,6 +8,8 @@ import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.net.Uri
 import android.provider.MediaStore
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import com.example.dermai.R
 import com.example.dermai.databinding.ActivityCameraBinding
 import com.example.dermai.ui.base.BaseActivity
@@ -16,6 +18,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
+import com.example.dermai.ui.result.ResultActivity
 import java.io.InputStream
 import java.nio.ByteBuffer
 import java.util.concurrent.ExecutionException
@@ -40,6 +43,8 @@ class CameraActivity : BaseActivity<ActivityCameraBinding>() {
                 try {
                     val inputStream: InputStream? = contentResolver.openInputStream(it)
                     capturedBitmap = BitmapFactory.decodeStream(inputStream)
+                    binding.ivSelectedImage.setImageBitmap(capturedBitmap)
+                    cameraElementsVisibility(false)
                     Toast.makeText(this, "Image selected successfully", Toast.LENGTH_SHORT).show()
                 } catch (e: Exception) {
                     Toast.makeText(this, "Failed to select image", Toast.LENGTH_SHORT).show()
@@ -65,12 +70,23 @@ class CameraActivity : BaseActivity<ActivityCameraBinding>() {
     }
 
     override fun setActions() {
-        binding.btFlip.setOnClickListener {
-            flipCamera()
+
+        binding.apply {
+            btFlip.setOnClickListener {
+                flipCamera()
+            }
+            btGallery.setOnClickListener {
+                openGallery()
+            }
+            btCameraCancel.setOnClickListener {
+                cameraElementsVisibility(true)
+            }
+            btCameraConfirm.setOnClickListener {
+                moveToResultActivity()
+            }
         }
-        binding.btGallery.setOnClickListener {
-            openGallery()
-        }
+
+
     }
 
     override fun setObservers() {
@@ -125,8 +141,11 @@ class CameraActivity : BaseActivity<ActivityCameraBinding>() {
         imageCapture.takePicture(ContextCompat.getMainExecutor(this), object : ImageCapture.OnImageCapturedCallback() {
             override fun onCaptureSuccess(image: ImageProxy) {
                 capturedBitmap = imageProxyToBitmap(image)
+                cameraElementsVisibility(false)
                 image.close()
                 runOnUiThread {
+                    binding.ivSelectedImage.setImageBitmap(capturedBitmap)
+                    cameraElementsVisibility(false)
                     Toast.makeText(this@CameraActivity, "Image captured successfully", Toast.LENGTH_SHORT).show()
                 }
                 startCamera(cameraFacing)
@@ -196,5 +215,30 @@ class CameraActivity : BaseActivity<ActivityCameraBinding>() {
     private fun openGallery() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         galleryLauncher.launch(intent)
+    }
+
+    private fun cameraElementsVisibility(isVisible: Boolean) {
+
+        binding.btCamera.visibility = if (isVisible) VISIBLE else GONE
+        binding.cameraView.visibility = if(isVisible) VISIBLE else GONE
+        binding.btFlip.visibility = if (isVisible) VISIBLE else GONE
+        binding.btFlash.visibility = if (isVisible) VISIBLE else GONE
+        binding.btGallery.visibility = if (isVisible) VISIBLE else GONE
+        binding.ivScan.visibility = if (isVisible) VISIBLE else GONE
+
+        if(!isVisible) {
+            binding.ivSelectedImage.visibility = VISIBLE
+            binding.btCameraCancel.visibility = VISIBLE
+            binding.btCameraConfirm.visibility = VISIBLE
+        } else {
+            binding.ivSelectedImage.visibility = GONE
+            binding.btCameraCancel.visibility = GONE
+            binding.btCameraConfirm.visibility = GONE
+        }
+    }
+
+    private fun moveToResultActivity() {
+        val intent = Intent(this, ResultActivity::class.java)
+        startActivity(intent)
     }
 }
