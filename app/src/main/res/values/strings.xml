@@ -88,4 +88,6 @@
     <string name="Recommended">Recommended For You</string>
     <string name="wishlist">Wishlisted</string>
     <string name="analysis_result">Analysis Result</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
 </resources>

@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        intent = Intent(this, ResultActivity::class.java)
+        intent = Intent(this, CameraActivity::class.java)
         startActivity(intent)
 
         finish()
