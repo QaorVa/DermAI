@@ -1,10 +1,13 @@
 package com.example.dermai.ui.camera
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
+import android.net.Uri
+import android.provider.MediaStore
 import com.example.dermai.R
 import com.example.dermai.databinding.ActivityCameraBinding
 import com.example.dermai.ui.base.BaseActivity
@@ -13,6 +16,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
+import java.io.InputStream
 import java.nio.ByteBuffer
 import java.util.concurrent.ExecutionException
 import kotlin.math.abs
@@ -26,6 +30,21 @@ class CameraActivity : BaseActivity<ActivityCameraBinding>() {
     private val activityResultLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { result: Boolean ->
         if (result) {
             startCamera(cameraFacing)
+        }
+    }
+
+    private val galleryLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == RESULT_OK && result.data != null) {
+            val selectedImageUri: Uri? = result.data?.data
+            selectedImageUri?.let {
+                try {
+                    val inputStream: InputStream? = contentResolver.openInputStream(it)
+                    capturedBitmap = BitmapFactory.decodeStream(inputStream)
+                    Toast.makeText(this, "Image selected successfully", Toast.LENGTH_SHORT).show()
+                } catch (e: Exception) {
+                    Toast.makeText(this, "Failed to select image", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 
@@ -48,6 +67,9 @@ class CameraActivity : BaseActivity<ActivityCameraBinding>() {
     override fun setActions() {
         binding.btFlip.setOnClickListener {
             flipCamera()
+        }
+        binding.btGallery.setOnClickListener {
+            openGallery()
         }
     }
 
@@ -99,15 +121,6 @@ class CameraActivity : BaseActivity<ActivityCameraBinding>() {
     }
 
     private fun takePicture(imageCapture: ImageCapture) {
-        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            saveImageUsingMediaStore(imageCapture)
-            Log.d("CameraActivity", "Using MediaStore")
-        } else {
-            val file = File(getExternalFilesDir(null), "${System.currentTimeMillis()}.jpg")
-            val outputFileOptions = ImageCapture.OutputFileOptions.Builder(file).build()
-            saveImageToFile(imageCapture, outputFileOptions, file.path)
-            Log.d("CameraActivity", "Using File")
-        }*/
 
         imageCapture.takePicture(ContextCompat.getMainExecutor(this), object : ImageCapture.OnImageCapturedCallback() {
             override fun onCaptureSuccess(image: ImageProxy) {
@@ -178,5 +191,10 @@ class CameraActivity : BaseActivity<ActivityCameraBinding>() {
         } else {
             bitmap
         }
+    }
+
+    private fun openGallery() {
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        galleryLauncher.launch(intent)
     }
 }
