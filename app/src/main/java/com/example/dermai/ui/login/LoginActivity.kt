@@ -33,31 +33,35 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
             .requestEmail()
             .build()
         googleSignInClient = GoogleSignIn.getClient(this, gso)
+    }
 
+    override fun setActions() {
         binding.loginButton.setOnClickListener { loginUser() }
+
         binding.googleSignInButton.setOnClickListener { signInWithGoogle() }
+
         binding.registerTextView.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
             finish()
         }
-
-        authViewModel.user.observe(this, Observer { user ->
-            user?.let {
-                startActivity(Intent(this, HomeActivity::class.java))
-                finish()
-            }
-        })
-
-        authViewModel.error.observe(this, Observer { error ->
-            error?.let {
-                Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
-            }
-        })
     }
 
     override fun setProcess() {}
 
-    override fun setObservers() {}
+    override fun setObservers() {
+        authViewModel.user.observe(this) { user ->
+            user?.let {
+                startActivity(Intent(this, HomeActivity::class.java))
+                finish()
+            }
+        }
+
+        authViewModel.error.observe(this) { error ->
+            error?.let {
+                Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
 
     private fun loginUser() {
         val email = binding.emailEditText.text.toString().trim()

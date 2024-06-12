@@ -18,6 +18,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
+import com.example.dermai.ui.collection.CollectionActivity
+import com.example.dermai.ui.home.HomeActivity
 import com.example.dermai.ui.result.ResultActivity
 import java.io.InputStream
 import java.nio.ByteBuffer
@@ -58,7 +60,7 @@ class CameraActivity : BaseActivity<ActivityCameraBinding>() {
     }
 
     override fun setUI() {
-
+        setupBottomNavigationView()
     }
 
     override fun setProcess() {
@@ -240,5 +242,30 @@ class CameraActivity : BaseActivity<ActivityCameraBinding>() {
     private fun moveToResultActivity() {
         val intent = Intent(this, ResultActivity::class.java)
         startActivity(intent)
+    }
+
+    private fun setupBottomNavigationView() {
+        binding.bottomNavigationView.selectedItemId = R.id.camera
+        binding.bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.home -> {
+                    // Handle home click
+                    val intent = Intent(this, HomeActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                R.id.camera -> {
+                    // Handle camera click
+                    true
+                }
+                R.id.collection -> {
+                    // Handle collection click
+                    val intent = Intent(this, CollectionActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                else -> false
+            }
+        }
     }
 }

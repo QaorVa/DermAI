@@ -1,4 +1,4 @@
-package com.example.dermai.ui.home
+package com.example.dermai.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

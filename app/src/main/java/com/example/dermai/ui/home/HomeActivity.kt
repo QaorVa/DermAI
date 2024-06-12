@@ -1,17 +1,20 @@
 package com.example.dermai.ui.home
 
 import android.content.Intent
-import android.os.Bundle
 import android.view.KeyEvent
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dermai.R
 import com.example.dermai.databinding.ActivityHomeBinding
+import com.example.dermai.ui.adapter.RecommendedProductAdapter
+import com.example.dermai.ui.adapter.RecommendedProductItem
+import com.example.dermai.ui.adapter.SkinProfileAdapter
+import com.example.dermai.ui.adapter.SkinProfileItem
 import com.example.dermai.ui.base.BaseActivity
 import com.example.dermai.ui.camera.CameraActivity
 import com.example.dermai.ui.collection.CollectionActivity
-import com.example.dermai.ui.landing.LandingActivity
 import com.example.dermai.ui.login.LoginActivity
+import com.example.dermai.ui.result.ResultActivity
 import com.example.dermai.utils.AuthViewModel
 import com.example.dermai.utils.PreferenceManager
 import com.google.firebase.auth.FirebaseAuth
@@ -19,14 +22,6 @@ import com.google.firebase.auth.FirebaseAuth
 class HomeActivity : BaseActivity<ActivityHomeBinding>() {
 
     private val authViewModel: AuthViewModel by viewModels()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        binding.settingsIcon.setOnClickListener {
-            logout()
-        }
-    }
 
     override fun getViewBinding(): ActivityHomeBinding {
         return ActivityHomeBinding.inflate(layoutInflater)
@@ -40,6 +35,17 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
         setupSkinProfileSection()
         setupRecommendedSection()
         setupBottomNavigationView()
+    }
+
+    override fun setActions() {
+        binding.settingsIcon.setOnClickListener {
+            logout()
+        }
+
+        binding.skinResultButton.setOnClickListener {
+            val intent = Intent(this, ResultActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun getGreetingMessage(): String {
@@ -115,8 +121,8 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
 
     private fun logout() {
         authViewModel.logout()
-        PreferenceManager.getInstance(this).setLoggedIn(false)
-        startActivity(Intent(this, LandingActivity::class.java))
+        PreferenceManager.getInstance(this).clearPreferences()
+        startActivity(Intent(this, LoginActivity::class.java))
         finish()
     }
 }

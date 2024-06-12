@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
         android:layout_width="0dp"
@@ -14,9 +14,10 @@
         app:cardCornerRadius="12dp"
         app:cardUseCompatPadding="false"
         app:contentPadding="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" >
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -36,13 +37,13 @@
                     android:id="@+id/iv_skincare"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:contentDescription="@string/item_name"
                     android:scaleType="centerCrop"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/skincare"
-                    android:contentDescription="@string/item_name" />
+                    app:srcCompat="@drawable/skincare" />
             </androidx.cardview.widget.CardView>
 
             <TextView
@@ -50,8 +51,8 @@
                 android:layout_width="200dp"
                 android:layout_height="20dp"
                 android:layout_marginStart="10dp"
-                android:text="@string/item_name"
                 android:fontFamily="@font/worksans_regular"
+                android:text="@string/item_name"
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 app:layout_constraintStart_toEndOf="@+id/cardView"
@@ -99,31 +100,31 @@
                 android:layout_height="18dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="2dp"
+                android:contentDescription="@string/item_rating"
                 app:layout_constraintStart_toEndOf="@+id/cardView"
                 app:layout_constraintTop_toBottomOf="@+id/tv_item_tags"
-                app:srcCompat="@drawable/star"
-                android:contentDescription="@string/item_rating" />
+                app:srcCompat="@drawable/star" />
 
             <ImageView
                 android:id="@+id/iv_favorite"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="12dp"
+                android:contentDescription="@string/item_favorite"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tv_item_name"
-                app:srcCompat="@drawable/favorite_filled"
-                android:contentDescription="@string/item_favorite" />
+                app:srcCompat="@drawable/favorite_filled" />
 
             <ImageView
                 android:id="@+id/iv_link"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="12dp"
+                android:contentDescription="@string/item_link"
                 android:rotation="-45"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_item_price"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:srcCompat="@drawable/link"
-                android:contentDescription="@string/item_link" />
+                app:srcCompat="@drawable/link" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

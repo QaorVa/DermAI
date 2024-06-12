@@ -38,7 +38,7 @@
         android:visibility="gone"
         android:textColor="@color/white"
         android:fontFamily="@font/worksans_bold"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_center" />
 
     <Button
@@ -52,7 +52,7 @@
         android:fontFamily="@font/worksans_bold"
         android:text="@string/confirm"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
         app:layout_constraintStart_toEndOf="@+id/guideline_vertical_center" />
 
     <ImageView
@@ -102,9 +102,9 @@
         android:id="@+id/bt_camera"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="20dp"
         android:background="@drawable/round_background"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/camera" />
@@ -118,6 +118,15 @@
         app:layout_constraintBottom_toBottomOf="@+id/bt_camera"
         app:layout_constraintStart_toEndOf="@+id/bt_camera"
         app:srcCompat="@drawable/gallery" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:menu="@menu/bottom_nav_menu" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
