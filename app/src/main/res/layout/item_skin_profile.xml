@@ -25,41 +25,42 @@
             android:id="@+id/titleTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Skin Type"
-            android:textSize="16sp"
-            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/worksans_bold"
             android:gravity="center"
+            android:text="Skin Type"
             android:textColor="@android:color/white"
-            app:layout_constraintStart_toStartOf="parent"
+            android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="16dp" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/detailTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Combination"
-            android:textSize="14sp"
+            android:fontFamily="@font/worksans_regular"
             android:gravity="center"
+            android:text="Combination"
             android:textColor="@android:color/white"
-            app:layout_constraintStart_toStartOf="parent"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/titleTextView"
-            android:layout_marginTop="4dp" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/titleTextView" />
 
         <Button
             android:id="@+id/seeDetailsButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="See Details"
+            android:fontFamily="@font/worksans_bold"
             android:layout_gravity="center_horizontal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginBottom="16dp"
             android:background="@drawable/outline_button_background"
-            android:textColor="@color/accent" />
+            android:textColor="@color/white" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -7,13 +7,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dermai.R
 import com.example.dermai.data.model.Product
 import com.example.dermai.databinding.ActivityResultBinding
-import com.example.dermai.ui.adapter.WishlistAdapter
+import com.example.dermai.ui.adapter.ProductAdapter
 import com.example.dermai.ui.base.BaseActivity
-import com.example.dermai.ui.wishlist.WishlistActivity
 
 class ResultActivity : BaseActivity<ActivityResultBinding>() {
-    private lateinit var adapterSkincare: WishlistAdapter
-    private lateinit var adapterMakeup: WishlistAdapter
+    private lateinit var adapterSkincare: ProductAdapter
+    private lateinit var adapterMakeup: ProductAdapter
 
     override fun getViewBinding(): ActivityResultBinding {
         return ActivityResultBinding.inflate(layoutInflater)
@@ -51,7 +50,7 @@ class ResultActivity : BaseActivity<ActivityResultBinding>() {
     }
 
     private fun setAdapterSkincare() {
-        adapterSkincare = WishlistAdapter(object : WishlistAdapter.OnFavoriteClickCallback {
+        adapterSkincare = ProductAdapter(object : ProductAdapter.OnFavoriteClickCallback {
             override fun onFavoriteClicked(data: Product) {
                 val position = adapterSkincare.currentList.indexOf(data)
                 if (position != -1) {
@@ -60,7 +59,7 @@ class ResultActivity : BaseActivity<ActivityResultBinding>() {
                 }
             }
 
-        }, object : WishlistAdapter.OnLinkClickCallback {
+        }, object : ProductAdapter.OnLinkClickCallback {
             override fun onLinkClicked(data: Product) {
                 val sendIntent: Intent = Intent().apply {
                     action = Intent.ACTION_SEND
@@ -81,7 +80,7 @@ class ResultActivity : BaseActivity<ActivityResultBinding>() {
     }
 
     private fun setAdapterMakeup() {
-        adapterMakeup = WishlistAdapter(object : WishlistAdapter.OnFavoriteClickCallback {
+        adapterMakeup = ProductAdapter(object : ProductAdapter.OnFavoriteClickCallback {
             override fun onFavoriteClicked(data: Product) {
                 val position = adapterMakeup.currentList.indexOf(data)
                 if (position != -1) {
@@ -90,7 +89,7 @@ class ResultActivity : BaseActivity<ActivityResultBinding>() {
                 }
             }
 
-        }, object : WishlistAdapter.OnLinkClickCallback {
+        }, object : ProductAdapter.OnLinkClickCallback {
             override fun onLinkClicked(data: Product) {
                 val sendIntent: Intent = Intent().apply {
                     action = Intent.ACTION_SEND

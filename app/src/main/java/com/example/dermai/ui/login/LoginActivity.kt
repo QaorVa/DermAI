@@ -46,7 +46,9 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
         }
     }
 
-    override fun setProcess() {}
+    override fun setProcess() {
+        PreferenceManager.getInstance(this).setIsNotFirstTime(true)
+    }
 
     override fun setObservers() {
         authViewModel.user.observe(this) { user ->

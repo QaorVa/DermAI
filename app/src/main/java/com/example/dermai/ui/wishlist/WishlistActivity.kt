@@ -7,11 +7,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dermai.R
 import com.example.dermai.data.model.Product
 import com.example.dermai.databinding.ActivityWishlistBinding
-import com.example.dermai.ui.adapter.WishlistAdapter
+import com.example.dermai.ui.adapter.ProductAdapter
 import com.example.dermai.ui.base.BaseActivity
 
 class WishlistActivity : BaseActivity<ActivityWishlistBinding>() {
-        private lateinit var adapter: WishlistAdapter
+        private lateinit var adapter: ProductAdapter
 
         override fun getViewBinding(): ActivityWishlistBinding {
             return ActivityWishlistBinding.inflate(layoutInflater)
@@ -28,7 +28,7 @@ class WishlistActivity : BaseActivity<ActivityWishlistBinding>() {
         }
 
         override fun setProcess() {
-                adapter = WishlistAdapter(object : WishlistAdapter.OnFavoriteClickCallback {
+                adapter = ProductAdapter(object : ProductAdapter.OnFavoriteClickCallback {
                         override fun onFavoriteClicked(data: Product) {
                                 val position = adapter.currentList.indexOf(data)
                                 if (position != -1) {
@@ -37,7 +37,7 @@ class WishlistActivity : BaseActivity<ActivityWishlistBinding>() {
                                 }
                         }
 
-                }, object : WishlistAdapter.OnLinkClickCallback {
+                }, object : ProductAdapter.OnLinkClickCallback {
                         override fun onLinkClicked(data: Product) {
                                 val sendIntent: Intent = Intent().apply {
                                         action = Intent.ACTION_SEND

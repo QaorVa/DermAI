@@ -15,9 +15,9 @@ import com.example.dermai.databinding.ItemWishlistBinding
 import java.text.NumberFormat
 import java.util.Currency
 
-class WishlistAdapter(private val onFavoriteClickCallback: OnFavoriteClickCallback,
-                      private val onLinkClickCallback: OnLinkClickCallback,
-                      private val viewTypeAdapter: Int
+class ProductAdapter(private val onFavoriteClickCallback: OnFavoriteClickCallback,
+                     private val onLinkClickCallback: OnLinkClickCallback,
+                     private val viewTypeAdapter: Int
 ) : ListAdapter<Product, RecyclerView.ViewHolder>(WishlistDiffCallback()) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -28,9 +28,9 @@ class WishlistAdapter(private val onFavoriteClickCallback: OnFavoriteClickCallba
                 val binding = ItemWishlistBinding.inflate(LayoutInflater.from(parent.context), parent, false)
                 WishlistViewHolder(binding)
             }
-            VIEW_TYPE_ALTERNATE -> {
-                val alternateBinding = ItemRecommendedProfileBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                RecommendViewHolder(alternateBinding)
+            VIEW_TYPE_RECOMMEND -> {
+                val recommendBinding = ItemRecommendedProfileBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                RecommendViewHolder(recommendBinding)
             }
             else -> throw IllegalArgumentException("Invalid view type")
         }
@@ -40,7 +40,7 @@ class WishlistAdapter(private val onFavoriteClickCallback: OnFavoriteClickCallba
         fun bind(product: Product) {
             binding.apply {
                 tvItemName.text = product.name
-                tvItemPrice.text = product.price.toString().CurrencyFormat()
+                tvItemPrice.text = product.price.toString().currencyFormat()
                 tvItemRating.text = product.rating.toString()
                 ivSkincare.setImage(product.imageUri)
                 tvItemTags.text = product.tags
@@ -62,7 +62,7 @@ class WishlistAdapter(private val onFavoriteClickCallback: OnFavoriteClickCallba
             binding.apply {
                 productImageView.setImage(product.imageUri)
                 productNameTextView.text = product.name
-                productPriceTextView.text = product.price.toString().CurrencyFormat()
+                productPriceTextView.text = product.price.toString().currencyFormat()
 
                 ivFavorite.setOnClickListener {
                     onFavoriteClickCallback.onFavoriteClicked(product)
@@ -85,7 +85,6 @@ class WishlistAdapter(private val onFavoriteClickCallback: OnFavoriteClickCallba
     }
 
     class WishlistDiffCallback : DiffUtil.ItemCallback<Product>(){
-
         override fun areItemsTheSame(oldItem: Product, newItem: Product): Boolean {
             return oldItem.id == newItem.id
         }
@@ -112,7 +111,7 @@ class WishlistAdapter(private val onFavoriteClickCallback: OnFavoriteClickCallba
         submitList(newList)
     }
 
-    private fun String.CurrencyFormat(): String {
+    private fun String.currencyFormat(): String {
         val formatter = NumberFormat.getCurrencyInstance()
         formatter.maximumFractionDigits = 0
         formatter.currency = Currency.getInstance("IDR")
@@ -121,7 +120,7 @@ class WishlistAdapter(private val onFavoriteClickCallback: OnFavoriteClickCallba
 
     companion object {
         private const val VIEW_TYPE_WISHLIST = 1
-        private const val VIEW_TYPE_ALTERNATE = 2
+        private const val VIEW_TYPE_RECOMMEND = 2
     }
 
 }

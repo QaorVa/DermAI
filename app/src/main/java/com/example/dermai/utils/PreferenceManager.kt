@@ -13,6 +13,16 @@ class PreferenceManager(context: Context) {
         editor.apply()
     }
 
+    fun setIsNotFirstTime(isNotFirstTime: Boolean) {
+        val editor = sharedPreferences.edit()
+        editor.putBoolean(Constants.IS_NOT_FIRST_TIME, isNotFirstTime)
+        editor.apply()
+    }
+
+    fun getIsNotFirstTime(): Boolean {
+        return sharedPreferences.getBoolean(Constants.IS_NOT_FIRST_TIME, false)
+    }
+
     fun isLoggedIn(): Boolean {
         return sharedPreferences.getBoolean(IS_LOGGED_IN, false)
     }

@@ -9,6 +9,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.example.dermai.R
 import com.example.dermai.ui.home.HomeActivity
 import com.example.dermai.ui.landing.LandingActivity
+import com.example.dermai.ui.login.LoginActivity
 import com.example.dermai.utils.PreferenceManager
 
 class MainActivity : AppCompatActivity() {
@@ -21,6 +22,9 @@ class MainActivity : AppCompatActivity() {
 
         if(PreferenceManager.getInstance(this).isLoggedIn()) {
             startActivity(Intent(this, HomeActivity::class.java))
+            finish()
+        } else if(PreferenceManager.getInstance(this).getIsNotFirstTime()) {
+            startActivity(Intent(this, LoginActivity::class.java))
             finish()
         } else {
             startActivity(Intent(this, LandingActivity::class.java))
