@@ -21,6 +21,7 @@ import androidx.core.content.ContextCompat
 import com.example.dermai.ui.collection.CollectionActivity
 import com.example.dermai.ui.home.HomeActivity
 import com.example.dermai.ui.result.ResultActivity
+import com.example.dermai.ui.wishlist.WishlistActivity
 import java.io.InputStream
 import java.nio.ByteBuffer
 import java.util.concurrent.ExecutionException
@@ -258,9 +259,9 @@ class CameraActivity : BaseActivity<ActivityCameraBinding>() {
                     // Handle camera click
                     true
                 }
-                R.id.collection -> {
+                R.id.wishlist -> {
                     // Handle collection click
-                    val intent = Intent(this, CollectionActivity::class.java)
+                    val intent = Intent(this, WishlistActivity::class.java)
                     startActivity(intent)
                     true
                 }

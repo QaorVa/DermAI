@@ -25,7 +25,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/details"
                 android:fontFamily="@font/worksans_bold"
-                android:textColor="@android:color/black"
+                android:textColor="@android:color/white"
                 android:textSize="22sp"
                 android:layout_gravity="center" />
 

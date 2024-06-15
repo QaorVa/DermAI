@@ -1,5 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -14,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="24dp">
 
             <!-- Profile Section -->
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -30,9 +31,7 @@
                     android:scaleType="centerCrop"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toTopOf="@id/checkSkinCard"
-                    app:layout_constraintHorizontal_chainStyle="packed"
-                    android:background="@drawable/circle_background" />
+                    app:layout_constraintHorizontal_chainStyle="packed" />
 
                 <LinearLayout
                     android:id="@+id/userInfoLayout"
@@ -52,6 +51,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="4dp"
+                        android:textColor="@color/black"
                         android:text="Hello, User"
                         android:fontFamily="@font/worksans_bold"
                         android:textSize="18sp"
@@ -61,6 +61,7 @@
                         android:id="@+id/greetingTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/black"
                         android:text="Good Day"
                         android:fontFamily="@font/worksans_regular"
                         android:textSize="14sp" />
@@ -68,11 +69,11 @@
 
                 <ImageView
                     android:id="@+id/settingsIcon"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
                     android:src="@drawable/outline_settings"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/profileImageView"/>
+                    app:layout_constraintTop_toTopOf="@id/profileImageView" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -80,58 +81,81 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/checkSkinCard"
                 android:layout_width="match_parent"
-                android:layout_height="160dp"
+                android:layout_height="180dp"
                 android:layout_marginTop="16dp"
-                app:cardCornerRadius="8dp"
-                android:padding="16dp">
+                android:padding="16dp"
+                app:cardCornerRadius="16dp">
 
-                <RelativeLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/hero_bg">
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/imageView2"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:src="@drawable/hero_bg"
+                        android:scaleType="centerCrop"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="16dp"
+                        android:fontFamily="@font/worksans_bold"
+                        android:text="@string/check_your_skin_result_take_a_new_picture"
+                        android:textColor="@android:color/white"
+                        android:textSize="24sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <Button
+                        android:id="@+id/skinResultButton"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginBottom="16dp"
+                        android:fontFamily="@font/worksans_bold"
+                        android:text="Skin Result"
+                        android:textColor="@android:color/black"
+                        android:background="@drawable/bt_rounded_white"
+                        app:backgroundTint="@null"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_center"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <Button
+                        android:id="@+id/cameraButton"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginBottom="16dp"
+                        app:backgroundTint="@null"
+                        android:fontFamily="@font/worksans_bold"
+                        android:text="Camera"
+                        android:background="@drawable/bt_rounded_black"
+                        android:textColor="@android:color/white"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/guideline_vertical_center" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline_vertical_center"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/check_your_skin_result_take_a_new_picture"
-                        android:fontFamily="@font/worksans_bold"
-                        android:textSize="21sp"
-                        android:textColor="@android:color/white"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="16dp"
-                        android:layout_alignParentTop="true"/>
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.5" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:gravity="center"
-                        android:orientation="horizontal">
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-                        <Button
-                            android:id="@+id/skinResultButton"
-                            android:layout_width="150dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="8dp"
-                            android:backgroundTint="@color/white"
-                            android:text="Skin Result"
-                            android:fontFamily="@font/worksans_bold"
-                            android:textColor="@android:color/black" />
-
-                        <Button
-                            android:id="@+id/cameraButton"
-                            android:layout_width="150dp"
-                            android:layout_height="wrap_content"
-                            android:backgroundTint="@color/black"
-                            android:text="Camera"
-                            android:fontFamily="@font/worksans_bold"
-                            android:textColor="@android:color/white" />
-                    </LinearLayout>
-                </RelativeLayout>
             </androidx.cardview.widget.CardView>
 
             <TextView
@@ -139,9 +163,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Your Skin Profile"
+                android:textColor="@color/black"
                 android:fontFamily="@font/worksans_bold"
-                android:textSize="20sp"
-                android:textStyle="bold"
+                android:textSize="22sp"
                 android:layout_marginTop="16dp"/>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -159,9 +183,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Recommended For You"
+                android:textColor="@color/black"
                 android:fontFamily="@font/worksans_bold"
-                android:textSize="20sp"
-                android:textStyle="bold"
+                android:textSize="22sp"
                 android:layout_marginTop="16dp"/>
 
             <androidx.recyclerview.widget.RecyclerView

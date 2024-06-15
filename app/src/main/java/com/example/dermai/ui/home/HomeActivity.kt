@@ -10,8 +10,6 @@ import com.example.dermai.data.model.Product
 import com.example.dermai.data.model.SkinProfile
 import com.example.dermai.databinding.ActivityHomeBinding
 import com.example.dermai.ui.adapter.ProductAdapter
-import com.example.dermai.ui.adapter.RecommendedProductAdapter
-import com.example.dermai.ui.adapter.RecommendedProductItem
 import com.example.dermai.ui.adapter.SkinProfileAdapter
 import com.example.dermai.ui.base.BaseActivity
 import com.example.dermai.ui.camera.CameraActivity
@@ -19,6 +17,7 @@ import com.example.dermai.ui.collection.CollectionActivity
 import com.example.dermai.ui.details.DetailsActivity
 import com.example.dermai.ui.login.LoginActivity
 import com.example.dermai.ui.result.ResultActivity
+import com.example.dermai.ui.wishlist.WishlistActivity
 import com.example.dermai.utils.AuthViewModel
 import com.example.dermai.utils.PreferenceManager
 import com.google.firebase.auth.FirebaseAuth
@@ -146,9 +145,9 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
                     startActivity(intent)
                     true
                 }
-                R.id.collection -> {
+                R.id.wishlist -> {
                     // Handle collection click
-                    val intent = Intent(this, CollectionActivity::class.java)
+                    val intent = Intent(this, WishlistActivity::class.java)
                     startActivity(intent)
                     true
                 }

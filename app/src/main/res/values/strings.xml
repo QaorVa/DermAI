@@ -88,15 +88,17 @@
     <string name="skin_result">Skin Result</string>
     <string name="skin_profile">Your Skin Profile</string>
     <string name="Recommended">Recommended For You</string>
-    <string name="wishlist">Wishlisted</string>
+    <string name="wishlisted">Wishlisted</string>
     <string name="analysis_result">Analysis Result</string>
     <string name="dermai">DermAI</string>
     <string name="unlock_your_skin_s_secrets_with_a_selfie">Unlock Your Skin\'s Secrets with a Selfie!</string>
     <string name="home">Home</string>
     <string name="camera">Camera</string>
-    <string name="collection">Collection</string>
+    <string name="wishlist">Wishlist</string>
     <string name="check_your_skin_result_take_a_new_picture">Check Your Skin Result / Take a New Picture</string>
 
     <string name="cancel">Cancel</string>
     <string name="confirm">Confirm</string>
+    <string name="validation_email">Wrong email format!</string>
+    <string name="validation_password">8 characters minimum</string>
 </resources>

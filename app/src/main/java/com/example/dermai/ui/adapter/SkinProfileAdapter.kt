@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.dermai.R
 import com.example.dermai.data.model.SkinProfile
 import com.example.dermai.databinding.ItemSkinProfileBinding
 
@@ -33,6 +34,11 @@ class SkinProfileAdapter(private val onDetailsClickCallback: OnDetailsClickCallb
             binding.detailTextView.text = item.detail
             binding.seeDetailsButton.setOnClickListener {
                 onDetailsClickCallback.onDetailsClicked(item)
+            }
+            when(item.title){
+                "Skin Type" -> binding.skinProfileImageView.setImageResource(R.drawable.skin_type_full)
+                "Skin Tone" -> binding.skinProfileImageView.setImageResource(R.drawable.skin_tone_full)
+                "Acne Level" -> binding.skinProfileImageView.setImageResource(R.drawable.acne_level_full)
             }
         }
     }

@@ -26,12 +26,12 @@ class CollectionActivity : BaseActivity<ActivityCollectionBinding>() {
         binding.apply {
             cvMakeup.setOnClickListener {
                 intent = Intent(this@CollectionActivity, WishlistActivity::class.java)
-                intent.putExtra(WishlistActivity.EXTRA_CATEGORY, "makeup")
+                /*intent.putExtra(WishlistActivity.EXTRA_CATEGORY, "makeup")*/
                 startActivity(intent)
             }
             cvSkincare.setOnClickListener {
                 intent = Intent(this@CollectionActivity, WishlistActivity::class.java)
-                intent.putExtra(WishlistActivity.EXTRA_CATEGORY, "skincare")
+                /*intent.putExtra(WishlistActivity.EXTRA_CATEGORY, "skincare")*/
                 startActivity(intent)
             }
         }
@@ -42,7 +42,7 @@ class CollectionActivity : BaseActivity<ActivityCollectionBinding>() {
     }
 
     private fun setupBottomNavigationView() {
-        binding.bottomNavigationView.selectedItemId = R.id.collection
+        binding.bottomNavigationView.selectedItemId = R.id.wishlist
 
         binding.bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
@@ -58,7 +58,7 @@ class CollectionActivity : BaseActivity<ActivityCollectionBinding>() {
                     startActivity(intent)
                     true
                 }
-                R.id.collection -> {
+                R.id.wishlist -> {
                     // Handle collection click
                     true
                 }

@@ -9,6 +9,8 @@ import com.example.dermai.data.model.Product
 import com.example.dermai.databinding.ActivityWishlistBinding
 import com.example.dermai.ui.adapter.ProductAdapter
 import com.example.dermai.ui.base.BaseActivity
+import com.example.dermai.ui.camera.CameraActivity
+import com.example.dermai.ui.home.HomeActivity
 
 class WishlistActivity : BaseActivity<ActivityWishlistBinding>() {
         private lateinit var adapter: ProductAdapter
@@ -76,14 +78,7 @@ class WishlistActivity : BaseActivity<ActivityWishlistBinding>() {
         }
 
         private fun submitListCategory() {
-                when(intent.getStringExtra(EXTRA_CATEGORY)) {
-                        "skincare" -> {
-                                adapter.submitList(getInitialWishlistData().filter { it.category == "skincare" })
-                        }
-                        "makeup" -> {
-                                adapter.submitList(getInitialWishlistData().filter { it.category == "makeup" })
-                        }
-                }
+                adapter.submitList(getInitialWishlistData())
         }
 
         override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -92,6 +87,32 @@ class WishlistActivity : BaseActivity<ActivityWishlistBinding>() {
                         return true
                 }
                 return super.onOptionsItemSelected(item)
+        }
+
+        private fun setupBottomNavigationView() {
+                binding.bottomNavigationView.selectedItemId = R.id.wishlist
+
+                binding.bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
+                        when (menuItem.itemId) {
+                                R.id.home -> {
+                                        // Handle home click
+                                        val intent = Intent(this, HomeActivity::class.java)
+                                        startActivity(intent)
+                                        true
+                                }
+                                R.id.camera -> {
+                                        // Handle camera click
+                                        val intent = Intent(this, CameraActivity::class.java)
+                                        startActivity(intent)
+                                        true
+                                }
+                                R.id.wishlist -> {
+                                        // Handle collection click
+                                        true
+                                }
+                                else -> false
+                        }
+                }
         }
 
         companion object {
