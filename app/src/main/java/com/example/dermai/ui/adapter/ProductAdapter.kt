@@ -41,7 +41,6 @@ class ProductAdapter(private val onFavoriteClickCallback: OnFavoriteClickCallbac
             binding.apply {
                 tvItemName.text = product.name
                 tvItemPrice.text = product.price.toString().currencyFormat()
-                tvItemRating.text = product.rating.toString()
                 ivSkincare.setImage(product.imageUri)
                 tvItemTags.text = product.tags
 

@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.net.Uri
 import android.provider.MediaStore
+import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import com.example.dermai.R
@@ -18,10 +19,16 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
+import com.example.dermai.data.model.ResultResponse
 import com.example.dermai.ui.collection.CollectionActivity
 import com.example.dermai.ui.home.HomeActivity
 import com.example.dermai.ui.result.ResultActivity
 import com.example.dermai.ui.wishlist.WishlistActivity
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 import java.io.InputStream
 import java.nio.ByteBuffer
 import java.util.concurrent.ExecutionException
@@ -30,6 +37,9 @@ import kotlin.math.max
 import kotlin.math.min
 
 class CameraActivity : BaseActivity<ActivityCameraBinding>() {
+    private lateinit var viewModel: CameraViewModel
+    private lateinit var result: ResultResponse
+
     private var cameraFacing = CameraSelector.LENS_FACING_FRONT
     private var capturedBitmap: Bitmap? = null
 
@@ -70,6 +80,8 @@ class CameraActivity : BaseActivity<ActivityCameraBinding>() {
         } else {
             activityResultLauncher.launch(Manifest.permission.CAMERA)
         }
+
+        viewModel = ViewModelProvider(this)[CameraViewModel::class.java]
     }
 
     override fun setActions() {
@@ -85,7 +97,8 @@ class CameraActivity : BaseActivity<ActivityCameraBinding>() {
                 cameraElementsVisibility(true)
             }
             btCameraConfirm.setOnClickListener {
-                moveToResultActivity()
+                val imageFile = bitmapToFile(capturedBitmap!!, "captured_image.png")
+                viewModel.setResult(imageFile)
             }
         }
 
@@ -93,7 +106,19 @@ class CameraActivity : BaseActivity<ActivityCameraBinding>() {
     }
 
     override fun setObservers() {
-
+        viewModel.isSuccess.observe(this) { isSuccess ->
+            if(isSuccess) {
+                moveToResultActivity()
+            }
+        }
+        viewModel.isLoading.observe(this) {
+            showLoading(it)
+        }
+        viewModel.isError.observe(this) { isError ->
+            if(isError) {
+                Toast.makeText(this, "Failed to process image", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun startCamera(cameraFacing: Int) {
@@ -149,6 +174,7 @@ class CameraActivity : BaseActivity<ActivityCameraBinding>() {
                 runOnUiThread {
                     binding.ivSelectedImage.setImageBitmap(capturedBitmap)
                     cameraElementsVisibility(false)
+
                     Toast.makeText(this@CameraActivity, "Image captured successfully", Toast.LENGTH_SHORT).show()
                 }
                 startCamera(cameraFacing)
@@ -267,6 +293,36 @@ class CameraActivity : BaseActivity<ActivityCameraBinding>() {
                 }
                 else -> false
             }
+        }
+    }
+
+    private fun bitmapToFile(bitmap: Bitmap, fileName: String): File {
+        // Create a file to save the image
+        val file = File(applicationContext.filesDir, fileName)
+        try {
+            file.createNewFile()
+
+            // Convert bitmap to byte array
+            val bos = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.PNG, 0, bos)
+            val bitmapData = bos.toByteArray()
+
+            // Write the byte array to file
+            val fos = FileOutputStream(file)
+            fos.write(bitmapData)
+            fos.flush()
+            fos.close()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        return file
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        if(isLoading) {
+            binding.progressBar.visibility = VISIBLE
+        } else {
+            binding.progressBar.visibility = GONE
         }
     }
 }
