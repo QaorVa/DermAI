@@ -27,6 +27,8 @@ class WishlistActivity : BaseActivity<ActivityWishlistBinding>() {
                         setDisplayShowHomeEnabled(true)
                         setHomeAsUpIndicator(R.drawable.chevron_left)
                 }
+
+                setupBottomNavigationView()
         }
 
         override fun setProcess() {
@@ -68,12 +70,12 @@ class WishlistActivity : BaseActivity<ActivityWishlistBinding>() {
 
         private fun getInitialWishlistData(): List<Product> {
                 return listOf(
-                        Product(1, "Skincare A", 4.5f, 150000, false, "Dry, Medium To Dark", Uri.parse("https://res.cloudinary.com/dowzkjtns/image/fetch/f_auto,c_limit,w_3840,q_auto/https://assets.thebodyshop.co.id/products/101011120-NEW%20VITAMIN%20E%20MOISTURE%20CREAM%20100ML-2.jpg"), "https://example.com/product1", "skincare"),
-                        Product(2, "Skincare B", 4.0f, 200000, false, "Combination, Low", Uri.parse("https://example.com/image2.jpg"), "https://example.com/product2", "skincare"),
-                        Product(3, "Skincare C", 4.8f, 250000, false, "Oily, Fair To Light", Uri.parse("https://example.com/image3.jpg"), "https://example.com/product3", "skincare"),
-                        Product(4, "Makeup A", 4.5f, 150000, false, "Dry, Medium To Dark", Uri.parse("https://res.cloudinary.com/dowzkjtns/image/fetch/f_auto,c_limit,w_3840,q_auto/https://assets.thebodyshop.co.id/products/101011120-NEW%20VITAMIN%20E%20MOISTURE%20CREAM%20100ML-2.jpg"), "https://example.com/product1", "makeup"),
-                        Product(5, "Makeup B", 4.0f, 200000, false, "Combination, Low", Uri.parse("https://example.com/image2.jpg"), "https://example.com/product2", "makeup"),
-                        Product(6, "Makeup C", 4.8f, 250000, false, "Oily, Fair To Light", Uri.parse("https://example.com/image3.jpg"), "https://example.com/product3", "makeup")
+                        Product(1, "Skincare A", 150000, false, "Dry, Medium To Dark", Uri.parse("https://res.cloudinary.com/dowzkjtns/image/fetch/f_auto,c_limit,w_3840,q_auto/https://assets.thebodyshop.co.id/products/101011120-NEW%20VITAMIN%20E%20MOISTURE%20CREAM%20100ML-2.jpg"), "https://example.com/product1"),
+                        Product(2, "Skincare B", 200000, false, "Combination, Low", Uri.parse("https://example.com/image2.jpg"), "https://example.com/product2"),
+                        Product(3, "Skincare C", 250000, false, "Oily, Fair To Light", Uri.parse("https://example.com/image3.jpg"), "https://example.com/product3"),
+                        Product(4, "Makeup A", 150000, false, "Dry, Medium To Dark", Uri.parse("https://res.cloudinary.com/dowzkjtns/image/fetch/f_auto,c_limit,w_3840,q_auto/https://assets.thebodyshop.co.id/products/101011120-NEW%20VITAMIN%20E%20MOISTURE%20CREAM%20100ML-2.jpg"), "https://example.com/product1"),
+                        Product(5, "Makeup B", 200000, false, "Combination, Low", Uri.parse("https://example.com/image2.jpg"), "https://example.com/product2"),
+                        Product(6, "Makeup C", 250000, false, "Oily, Fair To Light", Uri.parse("https://example.com/image3.jpg"), "https://example.com/product3")
                 )
         }
 
