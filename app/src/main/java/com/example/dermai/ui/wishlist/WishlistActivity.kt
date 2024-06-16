@@ -14,6 +14,7 @@ import com.example.dermai.ui.home.HomeActivity
 
 class WishlistActivity : BaseActivity<ActivityWishlistBinding>() {
         private lateinit var adapter: ProductAdapter
+        private val wishlistRepository = WishlistRepository()
 
         override fun getViewBinding(): ActivityWishlistBinding {
             return ActivityWishlistBinding.inflate(layoutInflater)
@@ -27,7 +28,6 @@ class WishlistActivity : BaseActivity<ActivityWishlistBinding>() {
                         setDisplayShowHomeEnabled(true)
                         setHomeAsUpIndicator(R.drawable.chevron_left)
                 }
-
                 setupBottomNavigationView()
         }
 
@@ -36,8 +36,8 @@ class WishlistActivity : BaseActivity<ActivityWishlistBinding>() {
                         override fun onFavoriteClicked(data: Product) {
                                 val position = adapter.currentList.indexOf(data)
                                 if (position != -1) {
-                                        // Remove the item from the adapter
                                         adapter.removeItem(position)
+                                        wishlistRepository.removeProductFromWishlist(data.id)
                                 }
                         }
 
@@ -51,36 +51,22 @@ class WishlistActivity : BaseActivity<ActivityWishlistBinding>() {
                                 val chooser = Intent.createChooser(sendIntent, null)
                                 startActivity(chooser)
                         }
-                }, 1)
-
-                submitListCategory()
+                }, 1, wishlistRepository)
 
                 binding.rvWishlist.adapter = adapter
+                binding.rvWishlist.layoutManager = LinearLayoutManager(this)
 
-                binding.apply {
-                        val layoutManager = LinearLayoutManager(this@WishlistActivity)
-                        rvWishlist.layoutManager = layoutManager
-                        rvWishlist.adapter = adapter
-                }
+                loadWishlistData()
         }
 
         override fun setObservers() {
 
         }
 
-        private fun getInitialWishlistData(): List<Product> {
-                return listOf(
-                        Product(1, "Skincare A", 150000, false, "Dry, Medium To Dark", Uri.parse("https://res.cloudinary.com/dowzkjtns/image/fetch/f_auto,c_limit,w_3840,q_auto/https://assets.thebodyshop.co.id/products/101011120-NEW%20VITAMIN%20E%20MOISTURE%20CREAM%20100ML-2.jpg"), "https://example.com/product1"),
-                        Product(2, "Skincare B", 200000, false, "Combination, Low", Uri.parse("https://example.com/image2.jpg"), "https://example.com/product2"),
-                        Product(3, "Skincare C", 250000, false, "Oily, Fair To Light", Uri.parse("https://example.com/image3.jpg"), "https://example.com/product3"),
-                        Product(4, "Makeup A", 150000, false, "Dry, Medium To Dark", Uri.parse("https://res.cloudinary.com/dowzkjtns/image/fetch/f_auto,c_limit,w_3840,q_auto/https://assets.thebodyshop.co.id/products/101011120-NEW%20VITAMIN%20E%20MOISTURE%20CREAM%20100ML-2.jpg"), "https://example.com/product1"),
-                        Product(5, "Makeup B", 200000, false, "Combination, Low", Uri.parse("https://example.com/image2.jpg"), "https://example.com/product2"),
-                        Product(6, "Makeup C", 250000, false, "Oily, Fair To Light", Uri.parse("https://example.com/image3.jpg"), "https://example.com/product3")
-                )
-        }
-
-        private fun submitListCategory() {
-                adapter.submitList(getInitialWishlistData())
+        private fun loadWishlistData() {
+                wishlistRepository.getWishlist { products ->
+                        adapter.submitList(products)
+                }
         }
 
         override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -97,27 +83,20 @@ class WishlistActivity : BaseActivity<ActivityWishlistBinding>() {
                 binding.bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
                         when (menuItem.itemId) {
                                 R.id.home -> {
-                                        // Handle home click
                                         val intent = Intent(this, HomeActivity::class.java)
                                         startActivity(intent)
                                         true
                                 }
                                 R.id.camera -> {
-                                        // Handle camera click
                                         val intent = Intent(this, CameraActivity::class.java)
                                         startActivity(intent)
                                         true
                                 }
                                 R.id.wishlist -> {
-                                        // Handle collection click
                                         true
                                 }
                                 else -> false
                         }
                 }
-        }
-
-        companion object {
-                const val EXTRA_CATEGORY = "extra_category"
         }
 }

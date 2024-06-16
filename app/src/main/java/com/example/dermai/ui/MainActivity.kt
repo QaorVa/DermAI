@@ -11,6 +11,7 @@ import com.example.dermai.ui.home.HomeActivity
 import com.example.dermai.ui.landing.LandingActivity
 import com.example.dermai.ui.login.LoginActivity
 import com.example.dermai.utils.PreferenceManager
+import com.google.firebase.FirebaseApp
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,6 +20,7 @@ class MainActivity : AppCompatActivity() {
         installSplashScreen()
         setContentView(R.layout.activity_main)
         finish()
+        FirebaseApp.initializeApp(this)
 
         if(PreferenceManager.getInstance(this).isLoggedIn()) {
             startActivity(Intent(this, HomeActivity::class.java))

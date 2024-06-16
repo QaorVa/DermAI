@@ -9,42 +9,39 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.example.dermai.R
 import com.example.dermai.data.model.Product
 import com.example.dermai.databinding.ItemRecommendedProfileBinding
 import com.example.dermai.databinding.ItemWishlistBinding
+import com.example.dermai.ui.wishlist.WishlistRepository
 import java.text.NumberFormat
 import java.util.Currency
 
 class ProductAdapter(private val onFavoriteClickCallback: OnFavoriteClickCallback,
                      private val onLinkClickCallback: OnLinkClickCallback,
-                     private val viewTypeAdapter: Int
+                     private val viewTypeAdapter: Int, private val wishlistRepository: WishlistRepository
 ) : ListAdapter<Product, RecyclerView.ViewHolder>(WishlistDiffCallback()) {
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): RecyclerView.ViewHolder {
-        return when (viewTypeAdapter) {
-            VIEW_TYPE_WISHLIST -> {
-                val binding = ItemWishlistBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                WishlistViewHolder(binding)
-            }
-            VIEW_TYPE_RECOMMEND -> {
-                val recommendBinding = ItemRecommendedProfileBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                RecommendViewHolder(recommendBinding)
-            }
-            else -> throw IllegalArgumentException("Invalid view type")
-        }
-    }
 
     inner class WishlistViewHolder(private val binding: ItemWishlistBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(product: Product) {
             binding.apply {
                 tvItemName.text = product.name
                 tvItemPrice.text = product.price.toString().currencyFormat()
+                tvItemRating.text = product.rating.toString()
                 ivSkincare.setImage(product.imageUri)
                 tvItemTags.text = product.tags
 
+                val isFavorited = wishlistRepository.isProductInWishlist(product.id)
+                ivFavorite.setImageResource(if (isFavorited) R.drawable.favorite_filled else R.drawable.favorite_hollow)
+
                 ivFavorite.setOnClickListener {
+                    if (isFavorited) {
+                        wishlistRepository.removeProductFromWishlist(product.id)
+                        ivFavorite.setImageResource(R.drawable.favorite_hollow)
+                    } else {
+                        wishlistRepository.addProductToWishlist(product)
+                        ivFavorite.setImageResource(R.drawable.favorite_filled)
+                    }
                     onFavoriteClickCallback.onFavoriteClicked(product)
                 }
 
@@ -53,7 +50,6 @@ class ProductAdapter(private val onFavoriteClickCallback: OnFavoriteClickCallbac
                 }
             }
         }
-
     }
 
     inner class RecommendViewHolder(private val binding: ItemRecommendedProfileBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -65,6 +61,8 @@ class ProductAdapter(private val onFavoriteClickCallback: OnFavoriteClickCallbac
 
                 ivFavorite.setOnClickListener {
                     onFavoriteClickCallback.onFavoriteClicked(product)
+                    wishlistRepository.addProductToWishlist(product)
+                    ivFavorite.setImageResource(R.drawable.favorite_filled)
                 }
 
                 ivLink.setOnClickListener {
@@ -72,7 +70,20 @@ class ProductAdapter(private val onFavoriteClickCallback: OnFavoriteClickCallbac
                 }
             }
         }
+    }
 
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return when (viewTypeAdapter) {
+            VIEW_TYPE_WISHLIST -> {
+                val binding = ItemWishlistBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                WishlistViewHolder(binding)
+            }
+            VIEW_TYPE_RECOMMEND -> {
+                val recommendBinding = ItemRecommendedProfileBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                RecommendViewHolder(recommendBinding)
+            }
+            else -> throw IllegalArgumentException("Invalid view type")
+        }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -100,7 +111,7 @@ class ProductAdapter(private val onFavoriteClickCallback: OnFavoriteClickCallbac
         fun onLinkClicked(data: Product)
     }
 
-    private fun ImageView.setImage(uri: Uri?) {
+    private fun ImageView.setImage(uri: String) {
         Glide.with(this).load(uri).apply(RequestOptions()).into(this)
     }
 
