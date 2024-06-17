@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.example.dermai.utils.Constants.IS_LOGGED_IN
 import com.example.dermai.utils.Constants.PREFS_NAME
+import com.example.dermai.utils.Constants.USER_ID
+import com.example.dermai.utils.Constants.USER_IMAGE
 
 class PreferenceManager(context: Context) {
     private val sharedPreferences: SharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
@@ -30,7 +32,24 @@ class PreferenceManager(context: Context) {
     fun clearPreferences() {
         val editor = sharedPreferences.edit()
         editor.remove(IS_LOGGED_IN)
+        editor.remove(USER_ID)
+        editor.remove(USER_IMAGE)
         editor.apply()
+    }
+
+    fun setUserDetails(userId: String, userImage: String) {
+        val editor = sharedPreferences.edit()
+        editor.putString(USER_ID, userId)
+        editor.putString(USER_IMAGE, userImage)
+        editor.apply()
+    }
+
+    fun getUserId(): String? {
+        return sharedPreferences.getString(USER_ID, null)
+    }
+
+    fun getUserImage(): String? {
+        return sharedPreferences.getString(USER_IMAGE, null)
     }
 
     companion object {

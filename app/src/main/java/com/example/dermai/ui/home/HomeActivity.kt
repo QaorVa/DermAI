@@ -2,18 +2,24 @@ package com.example.dermai.ui.home
 
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import android.view.KeyEvent
+import android.view.View
 import androidx.activity.viewModels
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.example.dermai.R
 import com.example.dermai.data.model.Product
+import com.example.dermai.data.model.ResultResponse
 import com.example.dermai.data.model.SkinProfile
+import com.example.dermai.data.model.Skincare
 import com.example.dermai.databinding.ActivityHomeBinding
 import com.example.dermai.ui.adapter.ProductAdapter
 import com.example.dermai.ui.adapter.SkinProfileAdapter
 import com.example.dermai.ui.base.BaseActivity
 import com.example.dermai.ui.camera.CameraActivity
-import com.example.dermai.ui.collection.CollectionActivity
 import com.example.dermai.ui.details.DetailsActivity
 import com.example.dermai.ui.login.LoginActivity
 import com.example.dermai.ui.result.ResultActivity
@@ -25,8 +31,74 @@ import com.google.firebase.auth.FirebaseAuth
 class HomeActivity : BaseActivity<ActivityHomeBinding>() {
 
     private val authViewModel: AuthViewModel by viewModels()
+    private lateinit var homeViewModel: HomeViewModel
     private lateinit var skinProfileAdapter: SkinProfileAdapter
     private lateinit var productAdapter: ProductAdapter
+
+    private val mockResultResponse = ResultResponse(
+        type = "dry",
+        tone = "2",
+        acne = "Moderate",
+        recommendedProducts = Skincare(
+            faceMoisturisers = listOf(
+                Product(
+                    brand = "neutrogena",
+                    name = "hydro boost emulsion face moisturisers 50 g",
+                    price = "Rp 214500",
+                    url = "https://www.myntra.com/face-moisturisers/neutrogena/neutrogena-hydro-boost-emulsion-face-moisturisers-50-g/10337731/buy",
+                    img = "https://assets.myntassets.com/h_1136,q_90,w_852/v1/assets/images/10337731/2020/8/21/64516939-6ad3-4db2-8477-a71064dcbe211598008967441-Neutrogena-Unisex-Hydro-Boost-Emulsion-Face-Moisturisers-50--1.jpg",
+                    skinType = "dry",
+                    concerns = listOf("general care", "", "")
+                ),
+                Product(
+                    brand = "the body shop",
+                    name = "the body shop",
+                    price = "Rp 206310",
+                    url = "https://www.myntra.com/face-moisturisers/the-body-shop/the-body-shop-vitamin-e-intense-moisture-cream-for-dry-skin-50-ml/7576908/buy",
+                    img = "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/7576908/2018/10/8/585c7726-315f-477a-aaed-8ea286b4b5b01538985334249-The-Body-Shop-Vitamin-E-Intense-Moisture-Cream-50ml-2201538985334149-1.jpg",
+                    skinType = "dry",
+                    concerns = listOf("general care", "", "")
+                ),
+                // Add more products as needed
+            ),
+            cleansers = listOf(
+                Product(
+                    brand = "skinkraft",
+                    name = "women moisturizing cleanser 60ml",
+                    price = "Rp 77805",
+                    url = "https://www.myntra.com/face-wash-and-cleanser/skinkraft/skinkraft-women-moisturizing-cleanser-60ml/15268060/buy",
+                    img = "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/15268060/2021/8/26/c5a28087-da11-43cf-b035-5df0f1fa520b1629971224026SKINKRAFT1.jpg",
+                    skinType = "dry",
+                    concerns = listOf("hydration", "", "")
+                ),
+                // Add more cleansers as needed
+            ),
+            masksAndPeels = listOf(
+                Product(
+                    brand = "ustraa",
+                    name = "men de tan face mask for dry skin",
+                    price = "Rp 41925",
+                    url = "https://www.myntra.com/mask-and-peel/ustraa/ustraa-men-de-tan-face-mask-for-dry-skin-/13236716/buy",
+                    img = "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/13236716/2021/2/8/c244ef91-4421-4a9d-bf24-d1a83d843dc71612761404073UstraaMenDeTanFaceMaskForDrySkin1.jpg",
+                    skinType = "dry",
+                    concerns = listOf("tan removal", "uneven skin tone", "softening", "smoothening")
+                ),
+                // Add more masks and peels as needed
+            ),
+            eyeCreams = listOf(
+                Product(
+                    brand = "estee lauder",
+                    name = "skincare saviours kit",
+                    price = "Rp 389025",
+                    url = "https://www.myntra.com/eye-cream/estee-lauder/estee-lauder-skincare-saviours-kit/15062164/buy",
+                    img = "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/15062164/2021/10/11/f529fe4f-ee6c-420c-b843-ff74a3136b8d1633932670158-Estee-Lauder-Skincare-Saviours-Kit-8281633932670089-1.jpg",
+                    skinType = "all",
+                    concerns = listOf("dryness", "", "")
+                ),
+                // Add more eye creams as needed
+            )
+        )
+    )
 
     override fun getViewBinding(): ActivityHomeBinding {
         return ActivityHomeBinding.inflate(layoutInflater)
@@ -36,6 +108,8 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
         val user = FirebaseAuth.getInstance().currentUser
         binding.welcomeTextView.text = "Hello, ${user?.displayName ?: user?.email}"
         binding.greetingTextView.text = getGreetingMessage()
+
+        user?.photoUrl?.toString()?.let { loadProfileImage(it) }
 
         setupBottomNavigationView()
     }
@@ -47,11 +121,14 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
 
         binding.skinResultButton.setOnClickListener {
             val intent = Intent(this, ResultActivity::class.java)
+            intent.putExtra(ResultActivity.EXTRA_RESULT, mockResultResponse)
             startActivity(intent)
         }
     }
 
     override fun setProcess() {
+        homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
+
         setSkinProfile()
         setProduct()
     }
@@ -102,13 +179,31 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
     private fun setProduct() {
         productAdapter = ProductAdapter(object : ProductAdapter.OnFavoriteClickCallback {
             override fun onFavoriteClicked(data: Product) {
-                //add to fav if not in fav
+                Log.d("HomeActivity", "Current favorite state: ${data.isFavorited}")
+
+                // Perform the appropriate operation based on the current state
+                if (data.isFavorited) {
+                    homeViewModel.deleteWishlist(data.url)
+                    Log.d("HomeActivity", "onFavoriteClicked: delete wishlist")
+                } else {
+                    homeViewModel.insertWishlist(data)
+                    Log.d("HomeActivity", "onFavoriteClicked: insert wishlist")
+                }
+
+                // Toggle the favorite state
+                data.isFavorited = !data.isFavorited
+
+                // Log the new state
+                Log.d("HomeActivity", "New favorite state: ${data.isFavorited}")
+
+                // Update the UI
+                productAdapter.notifyItemChanged(productAdapter.currentList.indexOf(data))
             }
         }, object : ProductAdapter.OnLinkClickCallback {
             override fun onLinkClicked(data: Product) {
                 val sendIntent: Intent = Intent().apply {
                     action = Intent.ACTION_SEND
-                    putExtra(Intent.EXTRA_TEXT, data.link)
+                    putExtra(Intent.EXTRA_TEXT, data.url)
                     type = "text/plain"
                 }
                 val chooser = Intent.createChooser(sendIntent, null)
@@ -117,12 +212,10 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
         }, 2)
 
         val products = listOf(
-            Product(1, "Skincare A", 150000, false, "Dry, Medium To Dark", Uri.parse("https://res.cloudinary.com/dowzkjtns/image/fetch/f_auto,c_limit,w_3840,q_auto/https://assets.thebodyshop.co.id/products/101011120-NEW%20VITAMIN%20E%20MOISTURE%20CREAM%20100ML-2.jpg"), "https://example.com/product1"),
-            Product(2, "Skincare B", 200000, false, "Combination, Low", Uri.parse("https://example.com/image2.jpg"), "https://example.com/product2"),
-            Product(3, "Skincare C", 250000, false, "Oily, Fair To Light", Uri.parse("https://example.com/image3.jpg"), "https://example.com/product3"),
-            Product(4, "Makeup A", 150000, false, "Dry, Medium To Dark", Uri.parse("https://res.cloudinary.com/dowzkjtns/image/fetch/f_auto,c_limit,w_3840,q_auto/https://assets.thebodyshop.co.id/products/101011120-NEW%20VITAMIN%20E%20MOISTURE%20CREAM%20100ML-2.jpg"), "https://example.com/product1"),
-            Product(5, "Makeup B", 200000, false, "Combination, Low", Uri.parse("https://example.com/image2.jpg"), "https://example.com/product2"),
-            Product(6, "Makeup C", 250000, false, "Oily, Fair To Light", Uri.parse("https://example.com/image3.jpg"), "https://example.com/product3")
+            Product("neutrogena", "hydro boost emulsion face moisturisers 50 g", "Rp 214500", "https://www.myntra.com/face-moisturisers/neutrogena/neutrogena-hydro-boost-emulsion-face-moisturisers-50-g/10337731/buy", "https://assets.myntassets.com/h_1136,q_90,w_852/v1/assets/images/10337731/2020/8/21/64516939-6ad3-4db2-8477-a71064dcbe211598008967441-Neutrogena-Unisex-Hydro-Boost-Emulsion-Face-Moisturisers-50--1.jpg", "dry", listOf("general care", "", "")),
+            Product("the body shop", "the body shop", "Rp 214500", "https://www.myntra.com/face-moisturisers/the-body-shop/the-body-shop-vitamin-e-intense-moisture-cream-for-dry-skin-50-ml/7576908/buy", "https://assets.myntassets.com/h_1136,q_90,w_852/v1/assets/images/10337731/2020/8/21/64516939-6ad3-4db2-8477-a71064dcbe211598008967441-Neutrogena-Unisex-Hydro-Boost-Emulsion-Face-Moisturisers-50--1.jpg", "dry", listOf("general care", "dryness", "deep nourishment")),
+            Product("just herbs", "unisex herbal nourishing facial massage cream 100 g", "Rp 214500", "https://www.myntra.com/face-moisturisers/just-herbs/just-herbs-unisex-herbal-nourishing-facial-massage-cream-100-g/11449220/buy", "https://assets.myntassets.com/h_1136,q_90,w_852/v1/assets/images/10337731/2020/8/21/64516939-6ad3-4db2-8477-a71064dcbe211598008967441-Neutrogena-Unisex-Hydro-Boost-Emulsion-Face-Moisturisers-50--1.jpg", "dry", listOf("hydration", "dryness", "softening", "smoothening")),
+            Product("skinkraft", "customized moisturizer - ultra rich moisturizer for dry skin - 45 ml", "Rp 214500", "https://www.myntra.com/face-moisturisers/skinkraft/skinkraft-customized-moisturizer---ultra-rich-moisturizer-for-dry-skin---45-ml/15345050/buy", "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/15345050/2021/9/2/ba997201-d526-4a1c-af9c-c74ab06fa8901630587934717SKINKRAFT1.jpg", "dry", listOf("general care", "", "")),
         )
 
         productAdapter.submitList(products)
@@ -156,7 +249,18 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
         }
     }
 
-    override fun setObservers() {}
+    override fun setObservers() {
+        homeViewModel.getAllWishlist().observe(this) { wishlist ->
+            wishlist.forEach { wishlistItem ->
+                val index = productAdapter.currentList.indexOfFirst { it.url == wishlistItem.url }
+                if (index != -1) {
+                    productAdapter.currentList[index].isFavorited = true
+                    productAdapter.notifyItemChanged(index)
+                }
+            }
+        }
+
+    }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -172,4 +276,13 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
         startActivity(Intent(this, LoginActivity::class.java))
         finish()
     }
+
+    private fun loadProfileImage(photoUrl: String) {
+        Glide.with(this)
+            .load(photoUrl)
+            .placeholder(R.drawable.profile_default)
+            .error(R.drawable.profile_default)
+            .into(binding.profileImageView)
+    }
+
 }

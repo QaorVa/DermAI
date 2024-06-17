@@ -288,12 +288,12 @@
         </HorizontalScrollView>
 
         <TextView
-            android:id="@+id/result_makeup"
+            android:id="@+id/result_moisturizer"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
             android:fontFamily="@font/worksans_semibold"
-            android:text="@string/makeup"
+            android:text="@string/face_moisturizer"
             android:textColor="@color/black"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="@+id/recommendations"
@@ -301,41 +301,93 @@
             app:layout_constraintTop_toBottomOf="@+id/recommendations" />
 
         <TextView
-            android:id="@+id/result_skincare"
+            android:id="@+id/result_eyecream"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:fontFamily="@font/worksans_semibold"
-            android:text="@string/skincare"
+            android:text="@string/eyecream"
             android:textColor="@color/black"
             android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="@+id/result_makeup"
-            app:layout_constraintStart_toStartOf="@+id/result_makeup"
-            app:layout_constraintTop_toBottomOf="@+id/rv_result_makeup" />
+            app:layout_constraintEnd_toEndOf="@+id/result_mask"
+            app:layout_constraintStart_toStartOf="@+id/result_mask"
+            app:layout_constraintTop_toBottomOf="@+id/rv_result_mask" />
+
+        <TextView
+            android:id="@+id/result_mask"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/worksans_semibold"
+            android:text="@string/mask"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="@+id/result_cleanser"
+            app:layout_constraintStart_toStartOf="@+id/rv_result_cleanser"
+            app:layout_constraintTop_toBottomOf="@+id/rv_result_cleanser" />
+
+        <TextView
+            android:id="@+id/result_cleanser"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/worksans_semibold"
+            android:text="@string/cleanser"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="@+id/result_moisturizer"
+            app:layout_constraintStart_toStartOf="@+id/result_moisturizer"
+            app:layout_constraintTop_toBottomOf="@+id/rv_result_moisturizer" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_result_makeup"
+            android:id="@+id/rv_result_moisturizer"
             android:layout_width="0dp"
-            android:layout_height="250dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="1dp"
             android:orientation="horizontal"
             android:scrollbars="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/result_makeup"
-            app:layout_constraintTop_toBottomOf="@+id/result_makeup" />
+            app:layout_constraintStart_toStartOf="@+id/result_moisturizer"
+            app:layout_constraintTop_toBottomOf="@+id/result_moisturizer" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_result_skincare"
+            android:id="@+id/rv_result_mask"
             android:layout_width="0dp"
-            android:layout_height="250dp"
-            android:layout_marginBottom="12dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:orientation="horizontal"
+            android:scrollbars="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/result_mask"
+            app:layout_constraintTop_toBottomOf="@+id/result_mask">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_result_cleanser"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:orientation="horizontal"
+            android:scrollbars="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/result_cleanser"
+            app:layout_constraintTop_toBottomOf="@+id/result_cleanser">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_result_eyecream"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:layout_marginBottom="8dp"
             android:orientation="horizontal"
             android:scrollbars="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/result_makeup"
-            app:layout_constraintTop_toBottomOf="@+id/result_skincare">
+            app:layout_constraintStart_toStartOf="@id/result_eyecream"
+            app:layout_constraintTop_toBottomOf="@id/result_eyecream">
 
         </androidx.recyclerview.widget.RecyclerView>
     </androidx.constraintlayout.widget.ConstraintLayout>

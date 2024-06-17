@@ -1,6 +1,6 @@
 package com.example.dermai.ui.adapter
 
-import android.net.Uri
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -9,11 +9,10 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.example.dermai.R
 import com.example.dermai.data.model.Product
 import com.example.dermai.databinding.ItemRecommendedProfileBinding
 import com.example.dermai.databinding.ItemWishlistBinding
-import java.text.NumberFormat
-import java.util.Currency
 
 class ProductAdapter(private val onFavoriteClickCallback: OnFavoriteClickCallback,
                      private val onLinkClickCallback: OnLinkClickCallback,
@@ -37,14 +36,20 @@ class ProductAdapter(private val onFavoriteClickCallback: OnFavoriteClickCallbac
     }
 
     inner class WishlistViewHolder(private val binding: ItemWishlistBinding) : RecyclerView.ViewHolder(binding.root) {
+        @SuppressLint("SetTextI18n")
         fun bind(product: Product) {
             binding.apply {
                 tvItemName.text = product.name
-                tvItemPrice.text = product.price.toString().currencyFormat()
-                ivSkincare.setImage(product.imageUri)
-                tvItemTags.text = product.tags
+                tvItemPrice.text = product.price
+                ivSkincare.setImage(product.img)
+                tvItemType.text = product.skinType
+                val concerns = product.concerns.filter { it.isNotBlank() }
+                tvItemConcern.text = concerns.joinToString(", ")
+
+                ivFavorite.setImageResource(if (product.isFavorited) R.drawable.favorite_filled else R.drawable.favorite_hollow)
 
                 ivFavorite.setOnClickListener {
+                    ivFavorite.setImageResource(if (product.isFavorited) R.drawable.favorite_filled else R.drawable.favorite_hollow)
                     onFavoriteClickCallback.onFavoriteClicked(product)
                 }
 
@@ -59,11 +64,17 @@ class ProductAdapter(private val onFavoriteClickCallback: OnFavoriteClickCallbac
     inner class RecommendViewHolder(private val binding: ItemRecommendedProfileBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(product: Product) {
             binding.apply {
-                productImageView.setImage(product.imageUri)
+                productImageView.setImage(product.img)
                 productNameTextView.text = product.name
-                productPriceTextView.text = product.price.toString().currencyFormat()
+                productPriceTextView.text = product.price
+                productTypeTextView.text = product.skinType
+                val concerns = product.concerns.filter { it.isNotBlank() }
+                productConcernTextView.text = concerns.joinToString(", ")
+
+                ivFavorite.setImageResource(if (product.isFavorited) R.drawable.favorite_filled else R.drawable.favorite_hollow)
 
                 ivFavorite.setOnClickListener {
+                    ivFavorite.setImageResource(if (product.isFavorited) R.drawable.favorite_filled else R.drawable.favorite_hollow)
                     onFavoriteClickCallback.onFavoriteClicked(product)
                 }
 
@@ -85,7 +96,7 @@ class ProductAdapter(private val onFavoriteClickCallback: OnFavoriteClickCallbac
 
     class WishlistDiffCallback : DiffUtil.ItemCallback<Product>(){
         override fun areItemsTheSame(oldItem: Product, newItem: Product): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.url == newItem.url
         }
         override fun areContentsTheSame(oldItem: Product, newItem: Product): Boolean {
             return oldItem == newItem
@@ -100,21 +111,14 @@ class ProductAdapter(private val onFavoriteClickCallback: OnFavoriteClickCallbac
         fun onLinkClicked(data: Product)
     }
 
-    private fun ImageView.setImage(uri: Uri?) {
-        Glide.with(this).load(uri).apply(RequestOptions()).into(this)
+    private fun ImageView.setImage(url: String) {
+        Glide.with(this).load(url).apply(RequestOptions()).into(this)
     }
 
     fun removeItem(position: Int) {
         val newList = currentList.toMutableList()
         newList.removeAt(position)
         submitList(newList)
-    }
-
-    private fun String.currencyFormat(): String {
-        val formatter = NumberFormat.getCurrencyInstance()
-        formatter.maximumFractionDigits = 0
-        formatter.currency = Currency.getInstance("IDR")
-        return formatter.format(this.toDouble())
     }
 
     companion object {

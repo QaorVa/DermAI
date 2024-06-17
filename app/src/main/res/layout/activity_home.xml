@@ -22,13 +22,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <ImageView
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/profileImageView"
                     android:layout_width="64dp"
                     android:layout_height="64dp"
                     android:layout_marginEnd="8dp"
-                    android:src="@drawable/outline_person"
+                    android:src="@drawable/profile_default"
                     android:scaleType="centerCrop"
+                    app:civ_border_width="1dp"
+                    app:civ_border_color="@color/accent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintHorizontal_chainStyle="packed" />

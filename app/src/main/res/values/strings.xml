@@ -101,4 +101,9 @@
     <string name="confirm">Confirm</string>
     <string name="validation_email">Wrong email format!</string>
     <string name="validation_password">8 characters minimum</string>
+    <string name="concern">Concerns: </string>
+    <string name="face_moisturizer">Face Moisturizers</string>
+    <string name="cleanser">Cleansers</string>
+    <string name="mask">Mask and Peel</string>
+    <string name="eyecream">Eye Cream</string>
 </resources>

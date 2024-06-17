@@ -108,6 +108,7 @@ class CameraActivity : BaseActivity<ActivityCameraBinding>() {
     override fun setObservers() {
         viewModel.isSuccess.observe(this) { isSuccess ->
             if(isSuccess) {
+                result = viewModel.getResult().value!!
                 moveToResultActivity()
             }
         }
@@ -268,6 +269,7 @@ class CameraActivity : BaseActivity<ActivityCameraBinding>() {
 
     private fun moveToResultActivity() {
         val intent = Intent(this, ResultActivity::class.java)
+        intent.putExtra(ResultActivity.EXTRA_RESULT, result)
         startActivity(intent)
     }
 

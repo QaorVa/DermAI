@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="mock_json_result">
+        <![CDATA[
+        {
+    "type": "dry",
+    "tone": "2",
+    "acne": "Moderate",
+    "skincare_recommendations":
+        "face-moisturisers": [
+            {
+                "brand": "neutrogena",
+                "name": "hydro boost emulsion face moisturisers 50 g",
+                "price": "Rp 214500",
+                "url": "https://www.myntra.com/face-moisturisers/neutrogena/neutrogena-hydro-boost-emulsion-face-moisturisers-50-g/10337731/buy",
+                "img": "https://assets.myntassets.com/h_1136,q_90,w_852/v1/assets/images/10337731/2020/8/21/64516939-6ad3-4db2-8477-a71064dcbe211598008967441-Neutrogena-Unisex-Hydro-Boost-Emulsion-Face-Moisturisers-50--1.jpg",
+                "skin type": "dry",
+                "concern": [
+                    "general care",
+                    "",
+                    ""
+                ]
+            },
+            {
+                "brand": "neutrogena",
+                "name": "hydro boost emulsion face moisturisers 50 g",
+                "price": "Rp 214500",
+                "url": "https://www.myntra.com/face-moisturisers/neutrogena/neutrogena-hydro-boost-emulsion-face-moisturisers-50-g/10337731/buy",
+                "img": "https://assets.myntassets.com/h_1136,q_90,w_852/v1/assets/images/10337731/2020/8/21/64516939-6ad3-4db2-8477-a71064dcbe211598008967441-Neutrogena-Unisex-Hydro-Boost-Emulsion-Face-Moisturisers-50--1.jpg",
+                "skin type": "dry",
+                "concern": [
+                    "general care",
+                    "",
+                    ""
+                ]
+            },
+            {
+                "brand": "the body shop",
+                "name": "the body shop",
+                "price": "Rp 206310",
+                "url": "https://www.myntra.com/face-moisturisers/the-body-shop/the-body-shop-vitamin-e-intense-moisture-cream-for-dry-skin-50-ml/7576908/buy",
+                "img": "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/7576908/2018/10/8/585c7726-315f-477a-aaed-8ea286b4b5b01538985334249-The-Body-Shop-Vitamin-E-Intense-Moisture-Cream-50ml-2201538985334149-1.jpg",
+                "skin type": "dry",
+                "concern": [
+                    "general care",
+                    "",
+                    ""
+                ]
+            },
+            {
+                "brand": "just herbs",
+                "name": "unisex herbal nourishing facial massage cream 100 g",
+                "price": "Rp 115050",
+                "url": "https://www.myntra.com/face-moisturisers/just-herbs/just-herbs-unisex-herbal-nourishing-facial-massage-cream-100-g/11449220/buy",
+                "img": "https://assets.myntassets.com/h_1136,q_90,w_852/v1/assets/images/productimage/2020/2/1/086116ac-62ca-4eba-91fd-cd6b1a38a43a1580513143041-1.jpg",
+                "skin type": "dry",
+                "concern": [
+                    "dryness",
+                    "deep nourishment",
+                    "general care"
+                ]
+            },
+            {
+                "brand": "skinkraft",
+                "name": "customized moisturizer - ultra rich moisturizer for dry skin - 45 ml",
+                "price": "Rp 97305",
+                "url": "https://www.myntra.com/face-moisturisers/skinkraft/skinkraft-customized-moisturizer---ultra-rich-moisturizer-for-dry-skin---45-ml/15345050/buy",
+                "img": "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/15345050/2021/9/2/ba997201-d526-4a1c-af9c-c74ab06fa8901630587934717SKINKRAFT1.jpg",
+                "skin type": "dry",
+                "concern": [
+                    "dryness",
+                    "",
+                    ""
+                ]
+            }
+        ],
+        "cleanser": [
+            {
+                "brand": "skinkraft",
+                "name": "women moisturizing cleanser 60ml",
+                "price": "Rp 77805",
+                "url": "https://www.myntra.com/face-wash-and-cleanser/skinkraft/skinkraft-women-moisturizing-cleanser-60ml/15268060/buy",
+                "img": "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/15268060/2021/8/26/c5a28087-da11-43cf-b035-5df0f1fa520b1629971224026SKINKRAFT1.jpg",
+                "skin type": "dry",
+                "concern": [
+                    "hydration",
+                    "",
+                    ""
+                ]
+            },
+            {
+                "brand": "dermafique",
+                "name": "unisex absolute detox facial cleanser 100 ml",
+                "price": "Rp 32565",
+                "url": "https://www.myntra.com/face-wash-and-cleanser/dermafique/dermafique-unisex-absolute-detox-facial-cleanser-100-ml/10855174/buy",
+                "img": "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/10855174/2021/9/28/d88ed0a6-b7e6-4653-a146-5bffc4d8783e1632827264780DermafiqueUnisexAbsoluteDetoxFacialCleanser100ml1.jpg",
+                "skin type": "dry",
+                "concern": [
+                    "general care",
+                    "",
+                    ""
+                ]
+            },
+            {
+                "brand": "himalaya",
+                "name": "moisturizing aloe vera face wash with vitamin e for dry skin 100 ml",
+                "price": "Rp 17745",
+                "url": "https://www.myntra.com/face-wash-and-cleanser/himalaya/himalaya-moisturizing-aloe-vera-face-wash-with-vitamin-e-for-dry-skin-100-ml/6628429/buy",
+                "img": "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/6628429/2020/12/17/58f35f6f-6bca-4024-b540-404cca283dfb1608201192420-Himalaya-Unisex-Moisturizing-Aloe-Vera-Face-Wash-100ml-10816-1.jpg",
+                "skin type": "dry",
+                "concern": [
+                    "hydration",
+                    "dryness",
+                    "softening",
+                    "smoothening"
+                ]
+            },
+            {
+                "brand": "loreal",
+                "name": "paris men hydra power water power duo foam face wash 100 g",
+                "price": "Rp 63180",
+                "url": "https://www.myntra.com/face-wash-and-cleanser/loreal/loreal-paris-men-hydra-power-water-power-duo-foam-face-wash-100-g/1546353/buy",
+                "img": "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/1546353/2017/6/21/11498046879263-LOreal-Men-Face-Wash-3341498046879238-1.jpg",
+                "skin type": "dry",
+                "concern": [
+                    "daily use",
+                    "hydration",
+                    "dull skin"
+                ]
+            },
+            {
+                "brand": "havintha",
+                "name": "natural aloe vera powder for hair & face",
+                "price": "Rp 58305",
+                "url": "https://www.myntra.com/face-wash-and-cleanser/havintha/havintha-natural-aloe-vera-powder-for-hair--face/15386566/buy",
+                "img": "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/15386566/2021/9/7/a108704f-c14d-4327-a578-2ec4ef3be1851630998492784HavinthaNaturalAloeveraPowderforHairGrowthFaceWash1.jpg",
+                "skin type": "dry",
+                "concern": [
+                    "fine lines",
+                    "wrinkles",
+                    "skin inflammation",
+                    "acne",
+                    "blemishes"
+                ]
+            }
+        ],
+        "mask-and-peel": [
+            {
+                "brand": "ustraa",
+                "name": "men de tan face mask for dry skin",
+                "price": "Rp 41925",
+                "url": "https://www.myntra.com/mask-and-peel/ustraa/ustraa-men-de-tan-face-mask-for-dry-skin-/13236716/buy",
+                "img": "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/13236716/2021/2/8/c244ef91-4421-4a9d-bf24-d1a83d843dc71612761404073UstraaMenDeTanFaceMaskForDrySkin1.jpg",
+                "skin type": "dry",
+                "concern": [
+                    "tan removal",
+                    "uneven skin tone",
+                    "softening",
+                    "smoothening"
+                ]
+            },
+            {
+                "brand": "the body shop",
+                "name": "british rose fresh plumping face mask 15 ml",
+                "price": "Rp 106860",
+                "url": "https://www.myntra.com/mask-and-peel/the-body-shop/the-body-shop-british-rose-fresh-plumping-face-mask-15-ml/12568744/buy",
+                "img": "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/productimage/2020/9/30/1d0ca761-2803-4898-bfd3-fc7e441689af1601419216660-1.jpg",
+                "skin type": "dry",
+                "concern": [
+                    "hydration",
+                    "uneven skin tone",
+                    "softening",
+                    "smoothening"
+                ]
+            },
+            {
+                "brand": "miss claire",
+                "name": "charcoal o2 bubble purifying mask",
+                "price": "Rp 23400",
+                "url": "https://www.myntra.com/mask-and-peel/miss-claire/miss-claire-charcoal-o2-bubble-purifying-mask/14294090/buy",
+                "img": "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/14294090/2021/8/5/4a317570-7b8a-4b96-b5f0-335c0cc3df8f1628143311210-Miss-Claire-Women-Mask-and-Peel-1621628143311107-1.jpg",
+                "skin type": "all",
+                "concern": [
+                    "hydration",
+                    "",
+                    ""
+                ]
+            },
+            {
+                "brand": "organic harvest",
+                "name": "unisex shine & glow sheet mask 20gm",
+                "price": "Rp 18330",
+                "url": "https://www.myntra.com/mask-and-peel/organic-harvest/organic-harvest-unisex-shine--glow-sheet-mask-20gm/10075829/buy",
+                "img": "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/10075829/2021/3/16/22698753-48f2-4f78-8708-a572291ec6ac1615872334916-Organic-Harvest-Unisex-Shine--Glow-Sheet-Mask-20gm-501161587-1.jpg",
+                "skin type": "all",
+                "concern": [
+                    "daily use",
+                    "",
+                    ""
+                ]
+            },
+            {
+                "brand": "mamaearth",
+                "name": "niacinamide & ginger bamboo sheet mask 25gm",
+                "price": "Rp 26130",
+                "url": "https://www.myntra.com/mask-and-peel/mamaearth/mamaearth-niacinamide--ginger-bamboo-sheet-mask-25gm/13253566/buy",
+                "img": "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/13253566/2021/8/11/ca4bf186-4c0b-42b5-a724-86b61a2dbd611628671484150MamaearthNiacinamideGingerBambooSheetMask25gm1.jpg",
+                "skin type": "all",
+                "concern": [
+                    "daily use",
+                    "",
+                    ""
+                ]
+            }
+        ],
+        "eye-cream": [
+            {
+                "brand": "estee lauder",
+                "name": "skincare saviours kit",
+                "price": "Rp 389025",
+                "url": "https://www.myntra.com/eye-cream/estee-lauder/estee-lauder-skincare-saviours-kit/15062164/buy",
+                "img": "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/15062164/2021/10/11/f529fe4f-ee6c-420c-b843-ff74a3136b8d1633932670158-Estee-Lauder-Skincare-Saviours-Kit-8281633932670089-1.jpg",
+                "skin type": "all",
+                "concern": [
+                    "dryness",
+                    "",
+                    ""
+                ]
+            },
+            {
+                "brand": "estee lauder",
+                "name": "mini advanced night repair supercharged complex eye gel 5 ml",
+                "price": "Rp 292500",
+                "url": "https://www.myntra.com/eye-cream/estee-lauder/estee-lauder-mini-advanced-night-repair-supercharged-complex-eye-gel-5-ml/12885042/buy",
+                "img": "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/12885042/2021/3/15/2ba4a186-0d8f-4723-9d6b-db959554d6911615786265416-Estee-Lauder-Advanced-Night-Repair-Eye-Supercharged-Complex--1.jpg",
+                "skin type": "all",
+                "concern": [
+                    "dryness",
+                    "",
+                    ""
+                ]
+            },
+            {
+                "brand": "kora organics",
+                "name": "noni radiant eye oil 10 ml",
+                "price": "Rp 721500",
+                "url": "https://www.myntra.com/eye-cream/kora-organics/kora-organics-noni-radiant-eye-oil-10-ml/14529984/buy",
+                "img": "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/14529984/2021/7/6/c4c44fb8-6569-438c-b528-9273f08c00bb1625567768114-Kora-Organics-Unisex-Face-Serum-and-Gel-4161625567767642-1.jpg",
+                "skin type": "all",
+                "concern": [
+                    "lightening",
+                    "dryness",
+                    ""
+                ]
+            },
+            {
+                "brand": "colorbar",
+                "name": "hydra white under eye serum 12 ml",
+                "price": "Rp 119730",
+                "url": "https://www.myntra.com/eye-cream/colorbar/colorbar-hydra-white-under-eye-serum-12-ml/1349162/buy",
+                "img": "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/1349162/2019/1/11/819b51c9-f3b3-4d86-81b9-211d88c046b31547187110698-Colorbar-Hydra-White-Intense-Whitening-Hydrating-Under-Eye-S-1.jpg",
+                "skin type": "all",
+                "concern": [
+                    "lightening",
+                    "",
+                    ""
+                ]
+            },
+            {
+                "brand": "the face shop",
+                "name": "pomegranate & collagen volume lifting eye cream 100 ml",
+                "price": "Rp 356265",
+                "url": "https://www.myntra.com/eye-cream/the-face-shop/the-face-shop-pomegranate--collagen-volume-lifting-eye-cream-100-ml/9113681/buy",
+                "img": "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/9113681/2021/8/11/aa34afd6-386e-450b-8e79-2b64ac8bda9d1628659026705TheFaceShopPomegranateCollagenVolumeLiftingEyeCream100ml1.jpg",
+                "skin type": "all",
+                "concern": [
+                    "dryness",
+                    "eye bags",
+                    ""
+                ]
+            }
+        ]
+    }
+}
+        ]]>
+    </string>
+
+</resources>

@@ -3,6 +3,7 @@ package com.example.dermai.ui.wishlist
 import android.content.Intent
 import android.net.Uri
 import android.view.MenuItem
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dermai.R
 import com.example.dermai.data.model.Product
@@ -14,6 +15,7 @@ import com.example.dermai.ui.home.HomeActivity
 
 class WishlistActivity : BaseActivity<ActivityWishlistBinding>() {
         private lateinit var adapter: ProductAdapter
+        private lateinit var viewModel: WishlistViewModel
 
         override fun getViewBinding(): ActivityWishlistBinding {
             return ActivityWishlistBinding.inflate(layoutInflater)
@@ -32,12 +34,13 @@ class WishlistActivity : BaseActivity<ActivityWishlistBinding>() {
         }
 
         override fun setProcess() {
+                viewModel = ViewModelProvider(this)[WishlistViewModel::class.java]
+
                 adapter = ProductAdapter(object : ProductAdapter.OnFavoriteClickCallback {
                         override fun onFavoriteClicked(data: Product) {
                                 val position = adapter.currentList.indexOf(data)
                                 if (position != -1) {
-                                        // Remove the item from the adapter
-                                        adapter.removeItem(position)
+                                        viewModel.deleteWishlist(data.url)
                                 }
                         }
 
@@ -45,15 +48,13 @@ class WishlistActivity : BaseActivity<ActivityWishlistBinding>() {
                         override fun onLinkClicked(data: Product) {
                                 val sendIntent: Intent = Intent().apply {
                                         action = Intent.ACTION_SEND
-                                        putExtra(Intent.EXTRA_TEXT, data.link)
+                                        putExtra(Intent.EXTRA_TEXT, data.url)
                                         type = "text/plain"
                                 }
                                 val chooser = Intent.createChooser(sendIntent, null)
                                 startActivity(chooser)
                         }
                 }, 1)
-
-                submitListCategory()
 
                 binding.rvWishlist.adapter = adapter
 
@@ -65,23 +66,23 @@ class WishlistActivity : BaseActivity<ActivityWishlistBinding>() {
         }
 
         override fun setObservers() {
-
+                viewModel.getAllWishlist().observe(this) {
+                        adapter.submitList(it)
+                }
         }
 
-        private fun getInitialWishlistData(): List<Product> {
+        /*private fun getInitialWishlistData(): List<Product> {
                 return listOf(
-                        Product(1, "Skincare A", 150000, false, "Dry, Medium To Dark", Uri.parse("https://res.cloudinary.com/dowzkjtns/image/fetch/f_auto,c_limit,w_3840,q_auto/https://assets.thebodyshop.co.id/products/101011120-NEW%20VITAMIN%20E%20MOISTURE%20CREAM%20100ML-2.jpg"), "https://example.com/product1"),
-                        Product(2, "Skincare B", 200000, false, "Combination, Low", Uri.parse("https://example.com/image2.jpg"), "https://example.com/product2"),
-                        Product(3, "Skincare C", 250000, false, "Oily, Fair To Light", Uri.parse("https://example.com/image3.jpg"), "https://example.com/product3"),
-                        Product(4, "Makeup A", 150000, false, "Dry, Medium To Dark", Uri.parse("https://res.cloudinary.com/dowzkjtns/image/fetch/f_auto,c_limit,w_3840,q_auto/https://assets.thebodyshop.co.id/products/101011120-NEW%20VITAMIN%20E%20MOISTURE%20CREAM%20100ML-2.jpg"), "https://example.com/product1"),
-                        Product(5, "Makeup B", 200000, false, "Combination, Low", Uri.parse("https://example.com/image2.jpg"), "https://example.com/product2"),
-                        Product(6, "Makeup C", 250000, false, "Oily, Fair To Light", Uri.parse("https://example.com/image3.jpg"), "https://example.com/product3")
+                        Product("neutrogena", "hydro boost emulsion face moisturisers 50 g", "Rp 214500", "https://www.myntra.com/face-moisturisers/neutrogena/neutrogena-hydro-boost-emulsion-face-moisturisers-50-g/10337731/buy", "https://assets.myntassets.com/h_1136,q_90,w_852/v1/assets/images/10337731/2020/8/21/64516939-6ad3-4db2-8477-a71064dcbe211598008967441-Neutrogena-Unisex-Hydro-Boost-Emulsion-Face-Moisturisers-50--1.jpg", "dry", listOf("general care", "", "")),
+                        Product("neutrogena", "hydro boost emulsion face moisturisers 50 g", "Rp 214500", "https://www.myntra.com/face-moisturisers/neutrogena/neutrogena-hydro-boost-emulsion-face-moisturisers-50-g/10337731/buy", "https://assets.myntassets.com/h_1136,q_90,w_852/v1/assets/images/10337731/2020/8/21/64516939-6ad3-4db2-8477-a71064dcbe211598008967441-Neutrogena-Unisex-Hydro-Boost-Emulsion-Face-Moisturisers-50--1.jpg", "dry", listOf("general care", "dryness", "deep nourishment")),
+                        Product("neutrogena", "hydro boost emulsion face moisturisers 50 g", "Rp 214500", "https://www.myntra.com/face-moisturisers/neutrogena/neutrogena-hydro-boost-emulsion-face-moisturisers-50-g/10337731/buy", "https://assets.myntassets.com/h_1136,q_90,w_852/v1/assets/images/10337731/2020/8/21/64516939-6ad3-4db2-8477-a71064dcbe211598008967441-Neutrogena-Unisex-Hydro-Boost-Emulsion-Face-Moisturisers-50--1.jpg", "dry", listOf("hydration", "dryness", "softening", "smoothening")),
+                        Product("neutrogena", "hydro boost emulsion face moisturisers 50 g", "Rp 214500", "https://www.myntra.com/face-moisturisers/neutrogena/neutrogena-hydro-boost-emulsion-face-moisturisers-50-g/10337731/buy", "https://assets.myntassets.com/h_1136,q_90,w_852/v1/assets/images/10337731/2020/8/21/64516939-6ad3-4db2-8477-a71064dcbe211598008967441-Neutrogena-Unisex-Hydro-Boost-Emulsion-Face-Moisturisers-50--1.jpg", "dry", listOf("general care", "", "")),
                 )
         }
 
         private fun submitListCategory() {
                 adapter.submitList(getInitialWishlistData())
-        }
+        }*/
 
         override fun onOptionsItemSelected(item: MenuItem): Boolean {
                 if (item.itemId == android.R.id.home) {
