@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,6 +27,7 @@ import com.example.dermai.ui.result.ResultActivity
 import com.example.dermai.ui.wishlist.WishlistActivity
 import com.example.dermai.utils.AuthViewModel
 import com.example.dermai.utils.PreferenceManager
+import com.example.dermai.utils.capitalizeFirstLetter
 import com.google.firebase.auth.FirebaseAuth
 
 class HomeActivity : BaseActivity<ActivityHomeBinding>() {
@@ -34,6 +36,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var skinProfileAdapter: SkinProfileAdapter
     private lateinit var productAdapter: ProductAdapter
+    private lateinit var result: ResultResponse
 
     private val mockResultResponse = ResultResponse(
         type = "dry",
@@ -121,7 +124,6 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
 
         binding.skinResultButton.setOnClickListener {
             val intent = Intent(this, ResultActivity::class.java)
-            intent.putExtra(ResultActivity.EXTRA_RESULT, mockResultResponse)
             startActivity(intent)
         }
     }
@@ -155,12 +157,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
                 }
             }
         })
-        val skinProfiles = listOf(
-            SkinProfile(1, "Skin Type", "Combination"),
-            SkinProfile(2, "Acne Level", "Low"),
-            SkinProfile(3, "Skin Tone", "Light")
-        )
-        skinProfileAdapter.submitList(skinProfiles)
+
 
         binding.skinProfileRecyclerView.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
@@ -211,14 +208,12 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
             }
         }, 2)
 
-        val products = listOf(
+        /*val products = listOf(
             Product("neutrogena", "hydro boost emulsion face moisturisers 50 g", "Rp 214500", "https://www.myntra.com/face-moisturisers/neutrogena/neutrogena-hydro-boost-emulsion-face-moisturisers-50-g/10337731/buy", "https://assets.myntassets.com/h_1136,q_90,w_852/v1/assets/images/10337731/2020/8/21/64516939-6ad3-4db2-8477-a71064dcbe211598008967441-Neutrogena-Unisex-Hydro-Boost-Emulsion-Face-Moisturisers-50--1.jpg", "dry", listOf("general care", "", "")),
             Product("the body shop", "the body shop", "Rp 214500", "https://www.myntra.com/face-moisturisers/the-body-shop/the-body-shop-vitamin-e-intense-moisture-cream-for-dry-skin-50-ml/7576908/buy", "https://assets.myntassets.com/h_1136,q_90,w_852/v1/assets/images/10337731/2020/8/21/64516939-6ad3-4db2-8477-a71064dcbe211598008967441-Neutrogena-Unisex-Hydro-Boost-Emulsion-Face-Moisturisers-50--1.jpg", "dry", listOf("general care", "dryness", "deep nourishment")),
             Product("just herbs", "unisex herbal nourishing facial massage cream 100 g", "Rp 214500", "https://www.myntra.com/face-moisturisers/just-herbs/just-herbs-unisex-herbal-nourishing-facial-massage-cream-100-g/11449220/buy", "https://assets.myntassets.com/h_1136,q_90,w_852/v1/assets/images/10337731/2020/8/21/64516939-6ad3-4db2-8477-a71064dcbe211598008967441-Neutrogena-Unisex-Hydro-Boost-Emulsion-Face-Moisturisers-50--1.jpg", "dry", listOf("hydration", "dryness", "softening", "smoothening")),
             Product("skinkraft", "customized moisturizer - ultra rich moisturizer for dry skin - 45 ml", "Rp 214500", "https://www.myntra.com/face-moisturisers/skinkraft/skinkraft-customized-moisturizer---ultra-rich-moisturizer-for-dry-skin---45-ml/15345050/buy", "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/15345050/2021/9/2/ba997201-d526-4a1c-af9c-c74ab06fa8901630587934717SKINKRAFT1.jpg", "dry", listOf("general care", "", "")),
-        )
-
-        productAdapter.submitList(products)
+        )*/
 
         binding.recommendedRecyclerView.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
@@ -250,13 +245,53 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
     }
 
     override fun setObservers() {
-        homeViewModel.getAllWishlist().observe(this) { wishlist ->
-            wishlist.forEach { wishlistItem ->
-                val index = productAdapter.currentList.indexOfFirst { it.url == wishlistItem.url }
-                if (index != -1) {
-                    productAdapter.currentList[index].isFavorited = true
-                    productAdapter.notifyItemChanged(index)
+
+        homeViewModel.getResult()?.observe(this) {
+            if(it != null) {
+                result = it
+
+                val toneNumber = it.tone.toInt()
+                val toneText = if(toneNumber <= 2) {
+                    getString(R.string.skin_tone_fairtolight)
+                } else if(toneNumber < 4) {
+                    getString(R.string.skin_tone_lighttomedium)
+                } else {
+                    getString(R.string.skin_tone_mediumtodark)
                 }
+
+
+                val skinProfiles = listOf(
+                    SkinProfile(1, "Skin Type", it.type.capitalizeFirstLetter()),
+                    SkinProfile(2, "Acne Level", it.acne),
+                    SkinProfile(3, "Skin Tone", toneText)
+                )
+                skinProfileAdapter.submitList(skinProfiles)
+
+                productAdapter.submitList(it.recommendedProducts.faceMoisturisers)
+
+                homeViewModel.getAllWishlist().observe(this) { wishlist ->
+                    wishlist.forEach { wishlistItem ->
+                        val index = productAdapter.currentList.indexOfFirst { it.url == wishlistItem.url }
+                        if (index != -1) {
+                            productAdapter.currentList[index].isFavorited = true
+                            productAdapter.notifyItemChanged(index)
+                        }
+                    }
+                }
+            } else {
+                result = mockResultResponse
+
+                AlertDialog.Builder(this)
+                    .setTitle("No Result Found")
+                    .setMessage("No result found. Please move to the camera to scan.")
+                    .setPositiveButton("OK") { dialog, _ ->
+                        val intent = Intent(this, CameraActivity::class.java)
+                        startActivity(intent)
+
+                        finish()
+                    }
+                    .setCancelable(false)
+                    .show()
             }
         }
 

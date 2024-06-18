@@ -13,9 +13,9 @@ import kotlinx.parcelize.Parcelize
 @TypeConverters(Converters::class)
 data class ResultResponse(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    val type: String,
-    val tone: String,
-    val acne: String,
+    @SerializedName("type") val type: String,
+    @SerializedName("tone") val tone: String,
+    @SerializedName("acne") val acne: String,
     @SerializedName("skincare_recommendations")
     val recommendedProducts: Skincare
 ) : Parcelable

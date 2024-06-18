@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.dermai.data.model.Product
+import com.example.dermai.data.model.ResultResponse
 import com.example.dermai.data.room.UserDao
 import com.example.dermai.data.room.UserDatabase
 import kotlinx.coroutines.CoroutineScope
@@ -41,4 +42,10 @@ class ResultViewModel(application: Application): AndroidViewModel(application) {
     fun getAllWishlist(): LiveData<List<Product>> {
         return userDao?.getAllWishlist() ?: MutableLiveData<List<Product>>().apply { value = emptyList() }
     }
+
+    fun getResults(): LiveData<ResultResponse>? {
+        return userDao?.getResult()
+    }
+
+
 }

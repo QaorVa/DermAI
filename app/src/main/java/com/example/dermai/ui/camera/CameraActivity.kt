@@ -8,7 +8,6 @@ import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.net.Uri
 import android.provider.MediaStore
-import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import com.example.dermai.R
@@ -21,10 +20,10 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.example.dermai.data.model.ResultResponse
-import com.example.dermai.ui.collection.CollectionActivity
 import com.example.dermai.ui.home.HomeActivity
 import com.example.dermai.ui.result.ResultActivity
 import com.example.dermai.ui.wishlist.WishlistActivity
+import com.example.dermai.utils.reduceFileImage
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
@@ -42,6 +41,7 @@ class CameraActivity : BaseActivity<ActivityCameraBinding>() {
 
     private var cameraFacing = CameraSelector.LENS_FACING_FRONT
     private var capturedBitmap: Bitmap? = null
+    private var imageFile: File? = null
 
     private val activityResultLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { result: Boolean ->
         if (result) {
@@ -97,8 +97,13 @@ class CameraActivity : BaseActivity<ActivityCameraBinding>() {
                 cameraElementsVisibility(true)
             }
             btCameraConfirm.setOnClickListener {
-                val imageFile = bitmapToFile(capturedBitmap!!, "captured_image.png")
-                viewModel.setResult(imageFile)
+                imageFile = capturedBitmap?.let { bitmapToFile(it, "camera_image_${System.currentTimeMillis()}.jpg").reduceFileImage() }
+                if (imageFile != null && imageFile!!.exists()) {
+                    Toast.makeText(this@CameraActivity, "Submitting image: ${imageFile!!.absolutePath}", Toast.LENGTH_SHORT).show()
+                    viewModel.setResult(imageFile!!)
+                } else {
+                    Toast.makeText(this@CameraActivity, "Failed to create image file", Toast.LENGTH_SHORT).show()
+                }
             }
         }
 
@@ -107,18 +112,26 @@ class CameraActivity : BaseActivity<ActivityCameraBinding>() {
 
     override fun setObservers() {
         viewModel.isSuccess.observe(this) { isSuccess ->
-            if(isSuccess) {
-                result = viewModel.getResult().value!!
-                moveToResultActivity()
+            if (isSuccess) {
+                viewModel.getResult().observe(this) { resultResponse ->
+                    resultResponse?.let {
+                        result = it
+                        viewModel.insertResult(result)
+                        moveToResultActivity()
+                    }
+                }
             }
         }
         viewModel.isLoading.observe(this) {
             showLoading(it)
         }
-        viewModel.isError.observe(this) { isError ->
-            if(isError) {
-                Toast.makeText(this, "Failed to process image", Toast.LENGTH_SHORT).show()
-            }
+
+        viewModel.isError.observe(this) {
+            Toast.makeText(this, "Error Processing Image", Toast.LENGTH_SHORT).show()
+        }
+
+        viewModel.errorMessage.observe(this) { message ->
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -269,8 +282,21 @@ class CameraActivity : BaseActivity<ActivityCameraBinding>() {
 
     private fun moveToResultActivity() {
         val intent = Intent(this, ResultActivity::class.java)
-        intent.putExtra(ResultActivity.EXTRA_RESULT, result)
         startActivity(intent)
+    }
+
+    private fun saveBitmapToUri(bitmap: Bitmap): Uri? {
+        val file = File(cacheDir, "camera_image_${System.currentTimeMillis()}.jpg")
+        try {
+            val outputStream = FileOutputStream(file)
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+            outputStream.flush()
+            outputStream.close()
+            return Uri.fromFile(file)
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        return null
     }
 
     private fun setupBottomNavigationView() {
