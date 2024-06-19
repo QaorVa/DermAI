@@ -285,20 +285,6 @@ class CameraActivity : BaseActivity<ActivityCameraBinding>() {
         startActivity(intent)
     }
 
-    private fun saveBitmapToUri(bitmap: Bitmap): Uri? {
-        val file = File(cacheDir, "camera_image_${System.currentTimeMillis()}.jpg")
-        try {
-            val outputStream = FileOutputStream(file)
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-            outputStream.flush()
-            outputStream.close()
-            return Uri.fromFile(file)
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
-        return null
-    }
-
     private fun setupBottomNavigationView() {
         binding.bottomNavigationView.selectedItemId = R.id.camera
         binding.bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->

@@ -36,72 +36,8 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var skinProfileAdapter: SkinProfileAdapter
     private lateinit var productAdapter: ProductAdapter
-    private lateinit var result: ResultResponse
 
-    private val mockResultResponse = ResultResponse(
-        type = "dry",
-        tone = "2",
-        acne = "Moderate",
-        recommendedProducts = Skincare(
-            faceMoisturisers = listOf(
-                Product(
-                    brand = "neutrogena",
-                    name = "hydro boost emulsion face moisturisers 50 g",
-                    price = "Rp 214500",
-                    url = "https://www.myntra.com/face-moisturisers/neutrogena/neutrogena-hydro-boost-emulsion-face-moisturisers-50-g/10337731/buy",
-                    img = "https://assets.myntassets.com/h_1136,q_90,w_852/v1/assets/images/10337731/2020/8/21/64516939-6ad3-4db2-8477-a71064dcbe211598008967441-Neutrogena-Unisex-Hydro-Boost-Emulsion-Face-Moisturisers-50--1.jpg",
-                    skinType = "dry",
-                    concerns = listOf("general care", "", "")
-                ),
-                Product(
-                    brand = "the body shop",
-                    name = "the body shop",
-                    price = "Rp 206310",
-                    url = "https://www.myntra.com/face-moisturisers/the-body-shop/the-body-shop-vitamin-e-intense-moisture-cream-for-dry-skin-50-ml/7576908/buy",
-                    img = "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/7576908/2018/10/8/585c7726-315f-477a-aaed-8ea286b4b5b01538985334249-The-Body-Shop-Vitamin-E-Intense-Moisture-Cream-50ml-2201538985334149-1.jpg",
-                    skinType = "dry",
-                    concerns = listOf("general care", "", "")
-                ),
-                // Add more products as needed
-            ),
-            cleansers = listOf(
-                Product(
-                    brand = "skinkraft",
-                    name = "women moisturizing cleanser 60ml",
-                    price = "Rp 77805",
-                    url = "https://www.myntra.com/face-wash-and-cleanser/skinkraft/skinkraft-women-moisturizing-cleanser-60ml/15268060/buy",
-                    img = "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/15268060/2021/8/26/c5a28087-da11-43cf-b035-5df0f1fa520b1629971224026SKINKRAFT1.jpg",
-                    skinType = "dry",
-                    concerns = listOf("hydration", "", "")
-                ),
-                // Add more cleansers as needed
-            ),
-            masksAndPeels = listOf(
-                Product(
-                    brand = "ustraa",
-                    name = "men de tan face mask for dry skin",
-                    price = "Rp 41925",
-                    url = "https://www.myntra.com/mask-and-peel/ustraa/ustraa-men-de-tan-face-mask-for-dry-skin-/13236716/buy",
-                    img = "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/13236716/2021/2/8/c244ef91-4421-4a9d-bf24-d1a83d843dc71612761404073UstraaMenDeTanFaceMaskForDrySkin1.jpg",
-                    skinType = "dry",
-                    concerns = listOf("tan removal", "uneven skin tone", "softening", "smoothening")
-                ),
-                // Add more masks and peels as needed
-            ),
-            eyeCreams = listOf(
-                Product(
-                    brand = "estee lauder",
-                    name = "skincare saviours kit",
-                    price = "Rp 389025",
-                    url = "https://www.myntra.com/eye-cream/estee-lauder/estee-lauder-skincare-saviours-kit/15062164/buy",
-                    img = "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/15062164/2021/10/11/f529fe4f-ee6c-420c-b843-ff74a3136b8d1633932670158-Estee-Lauder-Skincare-Saviours-Kit-8281633932670089-1.jpg",
-                    skinType = "all",
-                    concerns = listOf("dryness", "", "")
-                ),
-                // Add more eye creams as needed
-            )
-        )
-    )
+    private var result: ResultResponse? = null
 
     override fun getViewBinding(): ActivityHomeBinding {
         return ActivityHomeBinding.inflate(layoutInflater)
@@ -123,7 +59,17 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
         }
 
         binding.skinResultButton.setOnClickListener {
-            val intent = Intent(this, ResultActivity::class.java)
+            if(result == null) {
+                showAlertDialog()
+                return@setOnClickListener
+            } else {
+                val intent = Intent(this, ResultActivity::class.java)
+                startActivity(intent)
+            }
+        }
+
+        binding.cameraButton.setOnClickListener {
+            val intent = Intent(this, CameraActivity::class.java)
             startActivity(intent)
         }
     }
@@ -133,6 +79,48 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
 
         setSkinProfile()
         setProduct()
+    }
+
+    override fun setObservers() {
+
+        homeViewModel.getResult()?.observe(this) {
+            if(it != null) {
+                result = it
+
+                val toneNumber = it.tone.toInt()
+                val toneText = if(toneNumber <= 2) {
+                    getString(R.string.skin_tone_fairtolight)
+                } else if(toneNumber < 4) {
+                    getString(R.string.skin_tone_lighttomedium)
+                } else {
+                    getString(R.string.skin_tone_mediumtodark)
+                }
+
+
+                val skinProfiles = listOf(
+                    SkinProfile(1, "Skin Type", it.type.capitalizeFirstLetter()),
+                    SkinProfile(2, "Acne Level", it.acne),
+                    SkinProfile(3, "Skin Tone", toneText)
+                )
+                skinProfileAdapter.submitList(skinProfiles)
+
+                productAdapter.submitList(it.recommendedProducts.faceMoisturisers)
+
+                homeViewModel.getAllWishlist().observe(this) { wishlist ->
+                    wishlist.forEach { wishlistItem ->
+                        val index = productAdapter.currentList.indexOfFirst { it.url == wishlistItem.url }
+                        if (index != -1) {
+                            productAdapter.currentList[index].isFavorited = true
+                            productAdapter.notifyItemChanged(index)
+                        }
+                    }
+                }
+            } else {
+                showAlertDialog()
+
+            }
+        }
+
     }
 
     private fun setSkinProfile() {
@@ -208,19 +196,13 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
             }
         }, 2)
 
-        /*val products = listOf(
-            Product("neutrogena", "hydro boost emulsion face moisturisers 50 g", "Rp 214500", "https://www.myntra.com/face-moisturisers/neutrogena/neutrogena-hydro-boost-emulsion-face-moisturisers-50-g/10337731/buy", "https://assets.myntassets.com/h_1136,q_90,w_852/v1/assets/images/10337731/2020/8/21/64516939-6ad3-4db2-8477-a71064dcbe211598008967441-Neutrogena-Unisex-Hydro-Boost-Emulsion-Face-Moisturisers-50--1.jpg", "dry", listOf("general care", "", "")),
-            Product("the body shop", "the body shop", "Rp 214500", "https://www.myntra.com/face-moisturisers/the-body-shop/the-body-shop-vitamin-e-intense-moisture-cream-for-dry-skin-50-ml/7576908/buy", "https://assets.myntassets.com/h_1136,q_90,w_852/v1/assets/images/10337731/2020/8/21/64516939-6ad3-4db2-8477-a71064dcbe211598008967441-Neutrogena-Unisex-Hydro-Boost-Emulsion-Face-Moisturisers-50--1.jpg", "dry", listOf("general care", "dryness", "deep nourishment")),
-            Product("just herbs", "unisex herbal nourishing facial massage cream 100 g", "Rp 214500", "https://www.myntra.com/face-moisturisers/just-herbs/just-herbs-unisex-herbal-nourishing-facial-massage-cream-100-g/11449220/buy", "https://assets.myntassets.com/h_1136,q_90,w_852/v1/assets/images/10337731/2020/8/21/64516939-6ad3-4db2-8477-a71064dcbe211598008967441-Neutrogena-Unisex-Hydro-Boost-Emulsion-Face-Moisturisers-50--1.jpg", "dry", listOf("hydration", "dryness", "softening", "smoothening")),
-            Product("skinkraft", "customized moisturizer - ultra rich moisturizer for dry skin - 45 ml", "Rp 214500", "https://www.myntra.com/face-moisturisers/skinkraft/skinkraft-customized-moisturizer---ultra-rich-moisturizer-for-dry-skin---45-ml/15345050/buy", "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/15345050/2021/9/2/ba997201-d526-4a1c-af9c-c74ab06fa8901630587934717SKINKRAFT1.jpg", "dry", listOf("general care", "", "")),
-        )*/
-
         binding.recommendedRecyclerView.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         binding.recommendedRecyclerView.adapter = productAdapter
     }
 
     private fun setupBottomNavigationView() {
+        binding.bottomNavigationView.selectedItemId = R.id.home
         binding.bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.home -> {
@@ -244,59 +226,6 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
         }
     }
 
-    override fun setObservers() {
-
-        homeViewModel.getResult()?.observe(this) {
-            if(it != null) {
-                result = it
-
-                val toneNumber = it.tone.toInt()
-                val toneText = if(toneNumber <= 2) {
-                    getString(R.string.skin_tone_fairtolight)
-                } else if(toneNumber < 4) {
-                    getString(R.string.skin_tone_lighttomedium)
-                } else {
-                    getString(R.string.skin_tone_mediumtodark)
-                }
-
-
-                val skinProfiles = listOf(
-                    SkinProfile(1, "Skin Type", it.type.capitalizeFirstLetter()),
-                    SkinProfile(2, "Acne Level", it.acne),
-                    SkinProfile(3, "Skin Tone", toneText)
-                )
-                skinProfileAdapter.submitList(skinProfiles)
-
-                productAdapter.submitList(it.recommendedProducts.faceMoisturisers)
-
-                homeViewModel.getAllWishlist().observe(this) { wishlist ->
-                    wishlist.forEach { wishlistItem ->
-                        val index = productAdapter.currentList.indexOfFirst { it.url == wishlistItem.url }
-                        if (index != -1) {
-                            productAdapter.currentList[index].isFavorited = true
-                            productAdapter.notifyItemChanged(index)
-                        }
-                    }
-                }
-            } else {
-                result = mockResultResponse
-
-                AlertDialog.Builder(this)
-                    .setTitle("No Result Found")
-                    .setMessage("No result found. Please move to the camera to scan.")
-                    .setPositiveButton("OK") { dialog, _ ->
-                        val intent = Intent(this, CameraActivity::class.java)
-                        startActivity(intent)
-
-                        finish()
-                    }
-                    .setCancelable(false)
-                    .show()
-            }
-        }
-
-    }
-
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             finishAffinity()
@@ -318,6 +247,23 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
             .placeholder(R.drawable.profile_default)
             .error(R.drawable.profile_default)
             .into(binding.profileImageView)
+    }
+
+    private fun showAlertDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("No Result Found")
+            .setMessage("Oops! It looks like You haven't taken a photo yet. Please take a photo first.")
+            .setPositiveButton("OK") { dialog, _ ->
+                val intent = Intent(this, CameraActivity::class.java)
+                startActivity(intent)
+
+                finish()
+            }
+            .setNegativeButton("Later") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .setCancelable(false)
+            .show()
     }
 
 }
