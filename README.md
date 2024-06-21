@@ -19,4 +19,13 @@
    * Connect your Android device or use an emulator.
    * Click Run to build and deploy the app.
 ## Screenshots
-![Screenshot of dermAI](Images/landingpage1.png) ![Screenshot of dermAI](Images/landingpage2.png) ![Screenshot of dermAI](Images/signin.png) ![Screenshot of dermAI](Images/register.png) ![Screenshot of dermAI](Images/home.png) ![Screenshot of dermAI](Images/camera.png) ![Screenshot of dermAI](Images/result.png) ![Screenshot of dermAI](Images/wishlist.png)
+<p float="left">
+  <img src="Images/landingpage1.png" alt="Screenshot of dermAI" width="240" style="margin-right: 10px;">
+  <img src="Images/landingpage2.png" alt="Screenshot of dermAI" width="240" style="margin-right: 10px;">
+  <img src="Images/signin.png" alt="Screenshot of dermAI" width="240" style="margin-right: 10px;">
+  <img src="Images/register.png" alt="Screenshot of dermAI" width="240" style="margin-right: 10px;">
+  <img src="Images/home.png" alt="Screenshot of dermAI" width="240" style="margin-right: 10px;">
+  <img src="Images/camera.png" alt="Screenshot of dermAI" width="240" style="margin-right: 10px;">
+  <img src="Images/result.png" alt="Screenshot of dermAI" width="240" style="margin-right: 10px;">
+  <img src="Images/wishlist.png" alt="Screenshot of dermAI" width="240">
+</p>
