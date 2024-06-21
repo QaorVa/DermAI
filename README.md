@@ -20,12 +20,12 @@
    * Click Run to build and deploy the app.
 ## Screenshots
 <p float="left">
-  <img src="Images/landingpage1.png" alt="Screenshot of dermAI" width="240" style="margin-right: 10px;">
-  <img src="Images/landingpage2.png" alt="Screenshot of dermAI" width="240" style="margin-right: 10px;">
-  <img src="Images/signin.png" alt="Screenshot of dermAI" width="240" style="margin-right: 10px;">
-  <img src="Images/register.png" alt="Screenshot of dermAI" width="240" style="margin-right: 10px;">
-  <img src="Images/home.png" alt="Screenshot of dermAI" width="240" style="margin-right: 10px;">
-  <img src="Images/camera.png" alt="Screenshot of dermAI" width="240" style="margin-right: 10px;">
-  <img src="Images/result.png" alt="Screenshot of dermAI" width="240" style="margin-right: 10px;">
-  <img src="Images/wishlist.png" alt="Screenshot of dermAI" width="240">
+  <img src="Images/landingpage1.png" alt="Screenshot of dermAI" width="180" style="margin-right: 10px;">
+  <img src="Images/landingpage2.png" alt="Screenshot of dermAI" width="180" style="margin-right: 10px;">
+  <img src="Images/signin.png" alt="Screenshot of dermAI" width="180" style="margin-right: 10px;">
+  <img src="Images/register.png" alt="Screenshot of dermAI" width="180" style="margin-right: 10px;">
+  <img src="Images/home.png" alt="Screenshot of dermAI" width="180" style="margin-right: 10px;">
+  <img src="Images/camera.png" alt="Screenshot of dermAI" width="180" style="margin-right: 10px;">
+  <img src="Images/result.png" alt="Screenshot of dermAI" width="180" style="margin-right: 10px;">
+  <img src="Images/wishlist.png" alt="Screenshot of dermAI" width="180">
 </p>
